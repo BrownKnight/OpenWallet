@@ -1,6 +1,7 @@
 package com.openwallet.api.data.service;
 
 import com.openwallet.api.data.models.BaseEntity;
+import com.openwallet.api.util.ObjectPropertyHelpers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 
@@ -19,7 +20,16 @@ public class CRUDService<TEntity extends BaseEntity, TRepository extends CrudRep
     }
 
     public TEntity save(TEntity entity) {
-        return repository.save(entity);
+        if (entity.getId() != null) {
+            TEntity existingEntity = repository.findById(entity.getId())
+                    .orElseThrow();
+            ObjectPropertyHelpers.copyNonNullProperties(entity, existingEntity);
+            return repository.save(existingEntity);
+
+        } else {
+
+            return repository.save(entity);
+        }
     }
 
     public Iterable<TEntity> save(Iterable<TEntity> entities) {

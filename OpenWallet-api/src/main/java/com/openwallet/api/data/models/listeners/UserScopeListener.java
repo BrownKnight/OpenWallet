@@ -21,7 +21,6 @@ public class UserScopeListener {
     }
 
     @PreUpdate
-    @PrePersist
     public void ensureSameOwningUser(UserScopedEntity entity) throws RuntimeException {
         Object principal = SecurityContextHolder.getContext()
                 .getAuthentication()

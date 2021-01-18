@@ -33,6 +33,7 @@ public class As {
         if (AdminInstance == null) {
             AdminInstance = new As("Admin");
             AdminInstance.initUserData();
+            TestData.initIntegrationData(mockMvc);
         }
         return AdminInstance;
     }

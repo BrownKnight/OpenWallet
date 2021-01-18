@@ -7,7 +7,7 @@ import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 @EntityListeners(UserScopeListener.class)
-public class UserScopedEntity extends BaseEntity {
+public abstract class UserScopedEntity extends BaseEntity {
     protected Long ownerId;
 
     public Long getOwnerId() {

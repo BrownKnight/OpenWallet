@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Account extends BaseEntity {
+public class Account extends UserScopedEntity {
     private String name;
     @ManyToOne(targetEntity = Institution.class)
     private Institution institution;

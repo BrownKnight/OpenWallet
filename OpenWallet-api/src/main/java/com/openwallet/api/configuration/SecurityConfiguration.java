@@ -71,4 +71,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
+//    @Bean
+//    public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
+//        return new SecurityEvaluationContextExtension();
+//    }
 }

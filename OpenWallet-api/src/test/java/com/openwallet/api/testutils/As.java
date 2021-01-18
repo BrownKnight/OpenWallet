@@ -19,7 +19,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class As {
     private static final Logger logger = LoggerFactory.getLogger(As.class);
+
     private static As AdminInstance;
+    private static As UserAInstance;
+
     private static MockMvc mockMvc;
     private final String username;
     ObjectMapper objectMapper = new ObjectMapper();
@@ -38,6 +41,14 @@ public class As {
         return AdminInstance;
     }
 
+    public static As UserA() throws Exception {
+        if (UserAInstance == null) {
+            UserAInstance = new As("UserA");
+            UserAInstance.initUserData();
+        }
+        return UserAInstance;
+    }
+
     public static void setMockMvc(MockMvc mockMvc) {
         As.mockMvc = mockMvc;
     }
@@ -45,7 +56,8 @@ public class As {
     private void initUserData() throws Exception {
         logger.info("Creating user data for {}", this.username);
         UserLogin userLogin = new UserLogin(this.username, "TEST_PASSWORD");
-        userLogin.setUser(new User("Admin", "AdminL", "admin@ow.email"));
+        userLogin.setUser(new User(this.username, this.username, String.format("%s@ow.email", this.username)));
+
         this.postRequest("/api/login/register", userLogin)
                 .andExpect(status().isOk());
 
@@ -85,10 +97,10 @@ public class As {
                     .andExpect(status().isOk())
                     .andReturn();
 
-            LoginResponse res = objectMapper.readValue(body.getResponse()
-                    .getContentAsString(), LoginResponse.class);
-            this.token = res.getToken();
-
+            LoginResponse res = TestUtils.readResponseAs(body, LoginResponse.class);
+            if (res != null) {
+                this.token = res.getToken();
+            }
         } catch (Exception e) {
             logger.error("Could not login with user {}", this.username);
             logger.error(e.getMessage());

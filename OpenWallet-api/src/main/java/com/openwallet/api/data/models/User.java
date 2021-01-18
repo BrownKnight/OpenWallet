@@ -43,4 +43,3 @@ public class User extends BaseEntity {
         this.emailAddress = emailAddress;
     }
 }
-

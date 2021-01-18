@@ -1,5 +1,6 @@
 package com.openwallet.api.data.models;
 
+import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -15,7 +16,6 @@ public abstract class BaseEntity {
     @Id
     @GeneratedValue()
     protected Long id;
-
     @LastModifiedDate
     protected Date dateModified;
 
@@ -33,4 +33,5 @@ public abstract class BaseEntity {
     public Date getDateModified() {
         return dateModified;
     }
+
 }

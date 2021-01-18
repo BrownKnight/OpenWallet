@@ -18,7 +18,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@WithMockUser(username = "user", password = "test")
 class UserControllerIT extends BaseIntegrationTest {
 
     private final ObjectMapper objectMapper = new ObjectMapper();

@@ -8,20 +8,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public final class TestData {
     public static Institution defaultInstitution;
-    public static Account defaultAccount;
+    public static Account defaultAccountUserA;
+    public static Account defaultAccountUserB;
 
     public static void initIntegrationData(MockMvc mockMvc) throws Exception {
         As.setMockMvc(mockMvc);
 
         // init Institutions
         defaultInstitution = TestUtils.readResponseAs(As.Admin()
-                .putRequest(Endpoints.INSTITUTIONS, TestDataFactory.createInstitution("A"))
+                .putRequest(Endpoints.INSTITUTIONS, TestDataFactory.createInstitution("Bank o' Money"))
                 .andExpect(status().isOk())
                 .andReturn(), Institution.class);
 
         // init Accounts
-        defaultAccount = TestUtils.readResponseAs(As.Admin()
-                .putRequest(Endpoints.ACCOUNTS, TestDataFactory.createAccount("A"))
+        defaultAccountUserA = TestUtils.readResponseAs(As.UserA()
+                .putRequest(Endpoints.ACCOUNTS, TestDataFactory.createAccount("A1"))
+                .andExpect(status().isOk())
+                .andReturn(), Account.class);
+
+        defaultAccountUserB = TestUtils.readResponseAs(As.UserB()
+                .putRequest(Endpoints.ACCOUNTS, TestDataFactory.createAccount("B1"))
                 .andExpect(status().isOk())
                 .andReturn(), Account.class);
     }

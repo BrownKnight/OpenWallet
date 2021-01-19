@@ -1,5 +1,6 @@
 package com.openwallet.api.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openwallet.api.data.models.BaseEntity;
 import com.openwallet.api.data.service.CRUDService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CRUDController<TEntity extends BaseEntity, TService extends CRUDService<TEntity, ?>> {
     @Autowired
@@ -30,7 +29,8 @@ public class CRUDController<TEntity extends BaseEntity, TService extends CRUDSer
 
     @PutMapping()
     public ResponseEntity<?> save(@RequestBody TEntity body) {
-        return ResponseEntity.ok(service.save(body));
+        TEntity result = service.save(body);
+        return ResponseEntity.ok(result);
     }
 
     @PutMapping("batch")

@@ -1,13 +1,12 @@
 package com.openwallet.api.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openwallet.api.data.models.User;
 import com.openwallet.api.testutils.As;
 import com.openwallet.api.testutils.BaseIntegrationTest;
+import com.openwallet.api.testutils.TestUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.Map;
 
@@ -19,9 +18,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserControllerIT extends BaseIntegrationTest {
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
     @Test
     void GivenAUserItCanSaveItSuccessfully() throws Exception {
         User user = new User("Test01", "TestL01", "test01@ow.email");
@@ -57,8 +53,7 @@ class UserControllerIT extends BaseIntegrationTest {
         As.Admin()
                 .putRequest("/api/v1/users", user)
                 .andDo(print())
-                .andDo((data) -> user.setId(objectMapper.readValue(data.getResponse()
-                        .getContentAsString(), User.class)
+                .andDo((data) -> user.setId(TestUtils.readResponseAs(data, User.class)
                         .getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString(user.getFirstName())));

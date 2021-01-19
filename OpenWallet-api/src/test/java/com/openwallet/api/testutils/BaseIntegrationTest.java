@@ -16,7 +16,8 @@ public abstract class BaseIntegrationTest {
     public MockMvc mockMvc;
 
     @BeforeEach
-    public void setup() {
+    public void setup() throws Exception {
         As.setMockMvc(mockMvc);
+        As.Admin();
     }
 }

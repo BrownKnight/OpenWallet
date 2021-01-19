@@ -16,12 +16,13 @@ public class UserScopeListener {
         if (principal instanceof UserLogin) {
             entity.setOwnerId(((UserLogin) principal).getId());
         } else {
-            throw new RuntimeException("Could not set OwnerId as principal could not be found. No Session perhaps?");
+            throw new UnauthorisedEntityAccessException(
+                    "Could not set OwnerId as principal could not be found. No Session perhaps?");
         }
     }
 
     @PreUpdate
-    public void ensureSameOwningUser(UserScopedEntity entity) throws RuntimeException {
+    public void ensureSameOwningUser(UserScopedEntity entity) throws UnauthorisedEntityAccessException {
         Object principal = SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getPrincipal();
@@ -30,12 +31,13 @@ public class UserScopeListener {
             if (entity.getOwnerId() == null || authorisedUserId.equals(entity.getOwnerId())) {
                 entity.setOwnerId(authorisedUserId);
             } else {
-                throw new RuntimeException(String.format(
+                throw new UnauthorisedEntityAccessException(String.format(
                         "Failed to save entity due to owner id error. Current Owner: '%s'. New Owner: '%s'",
                         entity.getOwnerId(), authorisedUserId));
             }
         } else {
-            throw new RuntimeException("Could not set OwnerId as principal could not be found. No Session perhaps?");
+            throw new UnauthorisedEntityAccessException(
+                    "Could not set OwnerId as principal could not be found. No Session perhaps?");
         }
     }
 }

@@ -17,15 +17,15 @@ public final class TestUtils {
         try {
             String content = result.getResponse()
                     .getContentAsString();
+
             if (!content.isEmpty()) {
                 return objectMapper.readValue(content, type);
             } else {
                 logger.error("Empty string returned in response!");
-                return null;
             }
         } catch (UnsupportedEncodingException | JsonProcessingException e) {
             e.printStackTrace();
         }
-        return null;
+        throw new RuntimeException("Failed to read a response!");
     }
 }

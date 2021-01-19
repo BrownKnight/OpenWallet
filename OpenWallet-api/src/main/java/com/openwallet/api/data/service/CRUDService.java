@@ -27,8 +27,8 @@ public class CRUDService<TEntity extends BaseEntity, TRepository extends CrudRep
             return repository.save(existingEntity);
 
         } else {
-
-            return repository.save(entity);
+            TEntity returnobj = repository.save(entity);
+            return returnobj;
         }
     }
 

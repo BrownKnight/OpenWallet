@@ -55,7 +55,9 @@ public class UserLoginController extends BaseController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody UserLogin userLogin) {
         try {
-            return ResponseEntity.ok(userLoginService.registerNewUser(userLogin));
+            UserLogin body = userLoginService.registerNewUser(userLogin);
+            ResponseEntity<UserLogin> ok = ResponseEntity.ok(body);
+            return ok;
         } catch (EntityExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(new ErrorResponse("User already exists"));

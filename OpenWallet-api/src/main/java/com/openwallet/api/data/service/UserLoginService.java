@@ -33,6 +33,7 @@ public class UserLoginService {
         }
 
         userLogin.setPassword(passwordEncoder.encode(userLogin.getPassword()));
-        return repository.save(userLogin);
+        UserLogin returnobj = repository.save(userLogin);
+        return returnobj;
     }
 }

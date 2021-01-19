@@ -19,13 +19,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class As {
     private static final Logger logger = LoggerFactory.getLogger(As.class);
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    private static MockMvc mockMvc;
 
     private static As AdminInstance;
     private static As UserAInstance;
+    private static As UserBInstance;
 
-    private static MockMvc mockMvc;
     private final String username;
-    ObjectMapper objectMapper = new ObjectMapper();
+    private Long userId;
     private String token;
 
     private As(String username) {
@@ -49,6 +52,14 @@ public class As {
         return UserAInstance;
     }
 
+    public static As UserB() throws Exception {
+        if (UserBInstance == null) {
+            UserBInstance = new As("UserB");
+            UserBInstance.initUserData();
+        }
+        return UserBInstance;
+    }
+
     public static void setMockMvc(MockMvc mockMvc) {
         As.mockMvc = mockMvc;
     }
@@ -58,8 +69,10 @@ public class As {
         UserLogin userLogin = new UserLogin(this.username, "TEST_PASSWORD");
         userLogin.setUser(new User(this.username, this.username, String.format("%s@ow.email", this.username)));
 
-        this.postRequest("/api/login/register", userLogin)
-                .andExpect(status().isOk());
+        userId = TestUtils.readResponseAs(this.postRequest("/api/login/register", userLogin)
+                .andExpect(status().isOk())
+                .andReturn(), UserLogin.class)
+                .getId();
 
         this.login();
     }
@@ -112,5 +125,9 @@ public class As {
 
     public ResultActions login(String username, String password) throws Exception {
         return this.postRequest("/api/login", Map.of("username", username, "password", password));
+    }
+
+    public Long getUserId() {
+        return userId;
     }
 }

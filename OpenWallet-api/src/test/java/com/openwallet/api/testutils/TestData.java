@@ -11,9 +11,7 @@ public final class TestData {
     public static Account defaultAccountUserA;
     public static Account defaultAccountUserB;
 
-    public static void initIntegrationData(MockMvc mockMvc) throws Exception {
-        As.setMockMvc(mockMvc);
-
+    public static void initIntegrationData() throws Exception {
         // init Institutions
         defaultInstitution = TestUtils.readResponseAs(As.Admin()
                 .putRequest(Endpoints.INSTITUTIONS, TestDataFactory.createInstitution("Bank o' Money"))

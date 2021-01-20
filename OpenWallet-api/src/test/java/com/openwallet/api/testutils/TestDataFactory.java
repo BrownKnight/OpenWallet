@@ -3,6 +3,8 @@ package com.openwallet.api.testutils;
 import com.openwallet.api.data.models.Account;
 import com.openwallet.api.data.models.Institution;
 
+import java.util.Currency;
+
 public final class TestDataFactory {
     private TestDataFactory() {
     }
@@ -12,7 +14,8 @@ public final class TestDataFactory {
     }
 
     public static Account createAccount(String hint) {
-        return new Account(String.format("TEST_ACCOUNT_%s", hint), TestData.defaultInstitution);
+        return new Account(String.format("TEST_ACCOUNT_%s", hint), TestData.defaultInstitution,
+                Currency.getInstance("GBP"));
     }
 
 }

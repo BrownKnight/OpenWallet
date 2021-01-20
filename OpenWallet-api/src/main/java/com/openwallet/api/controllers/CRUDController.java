@@ -14,8 +14,6 @@ public class CRUDController<TEntity extends BaseEntity, TService extends CRUDSer
     @Autowired
     protected TService service;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
-
     @GetMapping()
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(service.findAll());

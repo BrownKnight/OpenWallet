@@ -5,10 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import com.openwallet.api.data.models.User;
 
-import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,6 +22,7 @@ public class UserLogin extends BaseEntity implements UserDetails {
     private boolean enabled = true;
 
     @OneToOne(targetEntity = User.class, cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
     private User user;
 
     protected UserLogin() {

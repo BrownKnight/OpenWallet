@@ -13,7 +13,7 @@ import java.util.Optional;
 public class JpaAuditingConfiguration {
     @Bean
     public AuditorAware<String> auditorProvider() {
-        return () -> Optional.ofNullable(SecurityContextHolder.getContext()
+        return () -> Optional.of(SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getName());
     }

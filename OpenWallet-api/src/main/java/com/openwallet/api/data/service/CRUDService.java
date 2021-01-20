@@ -1,9 +1,13 @@
 package com.openwallet.api.data.service;
 
 import com.openwallet.api.data.models.BaseEntity;
+import com.openwallet.api.data.models.UserLogin;
+import com.openwallet.api.data.models.UserScopedEntity;
+import com.openwallet.api.data.models.listeners.UnauthorisedEntityAccessException;
 import com.openwallet.api.util.ObjectPropertyHelpers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
 
@@ -16,7 +20,16 @@ public class CRUDService<TEntity extends BaseEntity, TRepository extends CrudRep
     }
 
     public Optional<TEntity> findById(long id) {
-        return repository.findById(id);
+        Optional<TEntity> returnedEntity = repository.findById(id);
+        if (returnedEntity.isPresent() && returnedEntity.get() instanceof UserScopedEntity) {
+            Long ownerId = ((UserScopedEntity) returnedEntity.get()).getOwnerId();
+            Long currentUserId = ((UserLogin) SecurityContextHolder.getContext()
+                    .getAuthentication()
+                    .getPrincipal()).getId();
+            if (!ownerId.equals(currentUserId)) {
+                throw new UnauthorisedEntityAccessException("Tried to fetch an entity owned by another user!");
+            }
+        } return returnedEntity;
     }
 
     public TEntity save(TEntity entity) {
@@ -27,8 +40,7 @@ public class CRUDService<TEntity extends BaseEntity, TRepository extends CrudRep
             return repository.save(existingEntity);
 
         } else {
-            TEntity returnobj = repository.save(entity);
-            return returnobj;
+            return repository.save(entity);
         }
     }
 

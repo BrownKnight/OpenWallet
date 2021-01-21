@@ -7,8 +7,6 @@ import com.openwallet.api.testutils.Endpoints;
 import com.openwallet.api.testutils.TestUtils;
 import static org.hamcrest.Matchers.*;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -79,5 +77,16 @@ class UserControllerIT extends BaseIntegrationTest {
                 .login(As.UserA()
                         .getUsername(), "NewPassword")
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void ChangingPasswordWithNoNewPasswordRaisesError() throws Exception {
+        As.UserA()
+                .postRequest(Endpoints.USERS + "/change-password", Map.of("newPassword", ""))
+                .andExpect(status().isBadRequest());
+
+        As.UserA()
+                .postRequest(Endpoints.USERS + "/change-password", Map.of())
+                .andExpect(status().isBadRequest());
     }
 }

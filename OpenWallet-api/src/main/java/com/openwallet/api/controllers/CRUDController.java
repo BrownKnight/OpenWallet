@@ -1,8 +1,7 @@
 package com.openwallet.api.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openwallet.api.data.models.BaseEntity;
-import com.openwallet.api.data.service.CRUDService;
+import com.openwallet.api.data.services.CRUDService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

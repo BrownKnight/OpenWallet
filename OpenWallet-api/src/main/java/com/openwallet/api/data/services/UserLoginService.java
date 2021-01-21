@@ -1,9 +1,11 @@
-package com.openwallet.api.data.service;
+package com.openwallet.api.data.services;
 
 import com.openwallet.api.data.models.UserLogin;
+import com.openwallet.api.data.models.responses.SuccessResponse;
 import com.openwallet.api.data.repositories.UserLoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.MissingRequiredPropertiesException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -33,7 +35,26 @@ public class UserLoginService {
         }
 
         userLogin.setPassword(passwordEncoder.encode(userLogin.getPassword()));
-        UserLogin returnobj = repository.save(userLogin);
-        return returnobj;
+        return repository.save(userLogin);
+    }
+
+    public SuccessResponse changeCurrentUsersPassword(String newPassword) {
+        if (newPassword == null || newPassword.isEmpty()) {
+            throw new IllegalArgumentException("newPassword parameter is null!");
+        }
+        Object principal = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
+        if (!(principal instanceof UserLogin)) {
+            throw new UnsupportedOperationException("Not currently logged in?");
+        }
+
+        UserLogin userLogin = repository.findById(((UserLogin) principal).getId())
+                .orElseThrow();
+
+        userLogin.setPassword(passwordEncoder.encode(newPassword));
+        repository.save(userLogin);
+
+        return new SuccessResponse("Successfully updated password!");
     }
 }

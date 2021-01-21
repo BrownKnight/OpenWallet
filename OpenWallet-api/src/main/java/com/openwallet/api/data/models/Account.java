@@ -1,8 +1,6 @@
 package com.openwallet.api.data.models;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Currency;
@@ -12,9 +10,10 @@ public class Account extends UserScopedEntity {
     private String name;
     @ManyToOne(targetEntity = Institution.class)
     private Institution institution;
-    private BigDecimal balance;
+    private BigDecimal balance = BigDecimal.ZERO;
+    @Column(nullable = false)
     private Currency currency;
-    @OneToMany(targetEntity = Transaction.class)
+    @OneToMany(targetEntity = Transaction.class, fetch = FetchType.LAZY)
     private Collection<Transaction> transactions;
 
     public Account(String name, Institution institution, Currency currency) {

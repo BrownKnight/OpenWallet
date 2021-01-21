@@ -1,20 +1,28 @@
 package com.openwallet.api.data.models;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Entity
 public class Transaction extends UserScopedEntity {
     private String description;
-    @ManyToOne(targetEntity = Account.class)
+    @ManyToOne(targetEntity = Account.class, fetch = FetchType.LAZY, optional = false)
     private Account account;
     // Positive = Debit, Negative = Credit
+    @Column(nullable = false)
     private BigDecimal amount;
+    @Column(nullable = false)
+    private Date transactionDate;
 
-    public Transaction(String description, Account account) {
+    public Transaction(String description, Account account, BigDecimal amount, Date transactionDate) {
         this.description = description;
         this.account = account;
+        this.amount = amount;
+        this.transactionDate = transactionDate;
     }
 
     public Transaction() {
@@ -40,8 +48,7 @@ public class Transaction extends UserScopedEntity {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
+    public Date getTransactionDate() {
+        return transactionDate;
     }
-
 }

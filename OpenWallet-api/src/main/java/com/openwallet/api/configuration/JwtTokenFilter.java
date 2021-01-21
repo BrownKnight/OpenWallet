@@ -1,6 +1,6 @@
 package com.openwallet.api.configuration;
 
-import com.openwallet.api.data.service.UserLoginService;
+import com.openwallet.api.data.services.UserLoginService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

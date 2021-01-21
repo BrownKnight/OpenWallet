@@ -1,9 +1,9 @@
 package com.openwallet.api.testutils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.openwallet.api.controllers.responses.LoginResponse;
 import com.openwallet.api.data.models.User;
 import com.openwallet.api.data.models.UserLogin;
+import com.openwallet.api.data.models.responses.LoginResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -11,11 +11,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.Map;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class As {
     private static final Logger logger = LoggerFactory.getLogger(As.class);
@@ -26,7 +25,6 @@ public class As {
     private static As AdminInstance;
     private static As UserAInstance;
     private static As UserBInstance;
-
     private final String username;
     private Long userId;
     private String token;
@@ -62,6 +60,10 @@ public class As {
 
     public static void setMockMvc(MockMvc mockMvc) {
         As.mockMvc = mockMvc;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     private void initUserData() throws Exception {

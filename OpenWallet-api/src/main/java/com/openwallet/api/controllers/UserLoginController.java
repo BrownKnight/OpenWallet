@@ -1,11 +1,11 @@
 package com.openwallet.api.controllers;
 
 import com.openwallet.api.configuration.JwtTokenUtil;
-import com.openwallet.api.controllers.responses.ErrorResponse;
-import com.openwallet.api.controllers.responses.LoginResponse;
-import com.openwallet.api.data.models.AuthRequest;
+import com.openwallet.api.data.models.responses.ErrorResponse;
+import com.openwallet.api.data.models.responses.LoginResponse;
+import com.openwallet.api.data.models.types.AuthRequest;
 import com.openwallet.api.data.models.UserLogin;
-import com.openwallet.api.data.service.UserLoginService;
+import com.openwallet.api.data.services.UserLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.MissingRequiredPropertiesException;
 import org.springframework.http.HttpHeaders;

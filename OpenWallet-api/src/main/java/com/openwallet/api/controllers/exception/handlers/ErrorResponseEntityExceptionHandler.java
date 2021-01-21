@@ -1,6 +1,6 @@
-package com.openwallet.api.controllers;
+package com.openwallet.api.controllers.exception.handlers;
 
-import com.openwallet.api.controllers.responses.ErrorResponse;
+import com.openwallet.api.data.models.responses.ErrorResponse;
 import com.openwallet.api.data.models.listeners.UnauthorisedEntityAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

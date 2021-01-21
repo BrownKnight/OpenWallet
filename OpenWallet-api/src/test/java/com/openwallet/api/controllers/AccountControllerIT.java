@@ -10,8 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc
 class AccountControllerIT extends BaseIntegrationTest {
     @Test
     public void NewAccountIsOwnedByCurrentUser() throws Exception {
@@ -75,17 +73,5 @@ class AccountControllerIT extends BaseIntegrationTest {
 
         assertNotNull(updatedAccount);
         assertEquals(updatedAccount.getName(), originalName);
-    }
-
-    @Test
-    public void CanFetchTransactionRelatedToAccount() throws Exception {
-        Account account = TestData.defaultAccountUserA;
-
-        Iterable<?> transactions = TestUtils.readResponseAs(As.UserA()
-                .getRequest(String.format("%s/%s/transactions", Endpoints.ACCOUNTS, account.getId()))
-                .andExpect(status().isOk())
-                .andReturn(), Iterable.class);
-
-        assertNotNull(transactions);
     }
 }

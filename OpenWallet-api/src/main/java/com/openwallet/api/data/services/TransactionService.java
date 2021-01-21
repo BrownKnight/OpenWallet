@@ -1,8 +1,6 @@
-package com.openwallet.api.data.service;
+package com.openwallet.api.data.services;
 
-import com.openwallet.api.data.models.Account;
 import com.openwallet.api.data.models.Transaction;
-import com.openwallet.api.data.repositories.AccountRepository;
 import com.openwallet.api.data.repositories.TransactionRepository;
 import org.springframework.stereotype.Component;
 

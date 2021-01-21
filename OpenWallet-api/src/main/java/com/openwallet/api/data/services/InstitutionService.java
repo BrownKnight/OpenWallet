@@ -1,4 +1,4 @@
-package com.openwallet.api.data.service;
+package com.openwallet.api.data.services;
 
 import com.openwallet.api.data.models.Institution;
 import com.openwallet.api.data.repositories.InstitutionRepository;

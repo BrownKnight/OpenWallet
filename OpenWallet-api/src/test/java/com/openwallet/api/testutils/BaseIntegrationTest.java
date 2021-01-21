@@ -9,6 +9,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+@SpringBootTest
+@AutoConfigureMockMvc
 public abstract class BaseIntegrationTest {
     protected static final Logger logger = LoggerFactory.getLogger(BaseIntegrationTest.class);
 

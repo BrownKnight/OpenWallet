@@ -1,6 +1,6 @@
 package com.openwallet.api.configuration;
 
-import com.openwallet.api.data.service.UserLoginService;
+import com.openwallet.api.data.services.UserLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;

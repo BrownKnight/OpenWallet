@@ -1,4 +1,4 @@
-package com.openwallet.api.controllers.responses;
+package com.openwallet.api.data.models.responses;
 
 public class LoginResponse {
     private String token;

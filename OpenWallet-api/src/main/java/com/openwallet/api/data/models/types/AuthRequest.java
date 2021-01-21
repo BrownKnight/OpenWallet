@@ -1,4 +1,4 @@
-package com.openwallet.api.data.models;
+package com.openwallet.api.data.models.types;
 
 public class AuthRequest {
     private String username;

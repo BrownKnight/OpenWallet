@@ -10,6 +10,8 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 
 import { Store } from "@/authStore.ts";
 
+import Home from "@/pages/Home.vue";
+
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);

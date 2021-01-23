@@ -10,8 +10,7 @@ export class BaseApi {
     this.showMessage = messageFunction;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async callApi(url: string, method = "GET", body?: string): Promise<any> {
+  async callApi(url: string, method = "GET", body?: string): Promise<Response> {
     console.log("Calling OW Api");
     return fetch(url, {
       method: method,
@@ -19,20 +18,14 @@ export class BaseApi {
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${Store.state.AuthModule.token}` }
     })
       .then(res => {
-        if (res.status === 401 || res.status === 500) {
+        if (res.status === 500) {
           console.error(
             `Attempted to call ${url} with a token (${Store.state.AuthModule.token}) that wasn't accepted, status ${res.status}`
           );
-          Store.commit("invalidateToken");
-          Router.push("/login").catch(() => {
-            console.log("Didn't route to /login")
-          });
-          throw "Invalid token";
         }
 
         return res;
       })
-      .then(res => res.json())
       .catch(error => {
         console.error(error);
         this.showMessage({ message: "Unknown error occurred. Session Ended", variant: "danger" });

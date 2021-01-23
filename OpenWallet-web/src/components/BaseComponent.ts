@@ -4,7 +4,7 @@ import { DataApi } from "@/data/DataApi";
 
 export class BaseComponent extends Vue {
   dataApi: DataApi = new DataApi(this.showMessage.bind(this));
-  
+
   showMessage({ message, variant, delay }: { message: string; variant?: string; delay?: number }) {
     this.$bvToast.toast(message, {
       noCloseButton: true,
@@ -17,6 +17,10 @@ export class BaseComponent extends Vue {
 
   isAdmin(): boolean {
     return false;
+  }
+
+  get isLoggedIn(): boolean {
+    return this.$store.state?.AuthModule?.token !== null;
   }
 
   prettyFormatDate(date: string | Date): string {

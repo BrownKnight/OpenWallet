@@ -24,7 +24,9 @@ export class BaseApi {
             `Attempted to call ${url} with a token (${Store.state.AuthModule.token}) that wasn't accepted, status ${res.status}`
           );
           Store.commit("invalidateToken");
-          Router.push("/login");
+          Router.push("/login").catch(() => {
+            console.log("Didn't route to /login")
+          });
           throw "Invalid token";
         }
 

@@ -11,6 +11,7 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 import { Store } from "@/authStore.ts";
 
 import Home from "@/pages/Home.vue";
+import Login from "@/pages/Login.vue";
 
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
@@ -20,6 +21,7 @@ Vue.use(Vuex);
 const routes: RouteConfig[] = [
   { path: "/index", component: Home },
   { path: "/", redirect: "/index" },
+  { path: "/login", component: Login },
   { path: "/.well-known/change-password", redirect: "/my-account" }
 ];
 

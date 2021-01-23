@@ -4,7 +4,7 @@
     <b-input-group class="mr-2 my-3" prepend="Email">
       <b-form-input
         id="input-email"
-        v-model="emailAddress"
+        v-model="username"
         type="email"
         required
         autocomplete="username"
@@ -35,6 +35,12 @@ import { BaseComponent } from "@/components/BaseComponent.ts";
 export default class LoginForm extends BaseComponent {
   username: string | null = null;
   password: string | null = null;
+
+  login() {
+    if (this.username && this.password) {
+      this.dataApi.userApi.login(this.username, this.password);
+    }
+  }
 }
 </script>
 

@@ -1,7 +1,10 @@
 import Vue from "vue";
 import moment from "moment";
+import { DataApi } from "@/data/DataApi";
 
 export class BaseComponent extends Vue {
+  dataApi: DataApi = new DataApi(this.showMessage.bind(this));
+  
   showMessage({ message, variant, delay }: { message: string; variant?: string; delay?: number }) {
     this.$bvToast.toast(message, {
       noCloseButton: true,

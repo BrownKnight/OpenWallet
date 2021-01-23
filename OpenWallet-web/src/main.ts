@@ -50,3 +50,5 @@ new Vue({
   router: router,
   store: Store
 }).$mount("#app");
+
+export const Router = router;

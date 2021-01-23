@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Header />
+    <Header v-if="isLoggedIn" />
     <b-badge v-if="!isProductionBuild" variant="danger" style="border-radius: 0;">DEVELOPMENT</b-badge>
     <b-container class="content">
       <router-view></router-view>
@@ -9,11 +9,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component } from "vue-property-decorator";
 import Header from "@/components/Header.vue";
+import { BaseComponent } from "@/components/BaseComponent";
 
 @Component({ components: { Header } })
-export default class App extends Vue {
+export default class App extends BaseComponent {
   get isProductionBuild() {
     return process.env.NODE_ENV === "production";
   }

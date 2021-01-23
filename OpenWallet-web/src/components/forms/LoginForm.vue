@@ -1,27 +1,22 @@
 <template>
   <b-form @submit.prevent="login">
-    <label class="sr-only" id="input-label-email" for="input-email">Email</label>
-    <b-input-group class="mr-2 my-3" prepend="Email">
-      <b-form-input
-        id="input-email"
-        v-model="username"
-        type="email"
-        required
-        autocomplete="username"
-        autofocus
-      ></b-form-input>
-    </b-input-group>
+    <LabelledInput
+      autocomplete="username"
+      id="username"
+      label="Email Address"
+      type="email"
+      v-model="authRequest.username"
+      required
+    />
 
-    <label class="sr-only" id="input-label-password" for="input-password">Password</label>
-    <b-input-group class="mt-4 mb-3" prepend="Password">
-      <b-form-input
-        id="input-password"
-        v-model="password"
-        type="password"
-        autocomplete="current-password"
-        required
-      ></b-form-input>
-    </b-input-group>
+    <LabelledInput
+      autocomplete="current-password"
+      id="password"
+      label="Password"
+      type="password"
+      v-model="authRequest.password"
+      required
+    />
 
     <b-button class="ml-2 my-2" variant="success" type="submit">Login</b-button>
   </b-form>
@@ -30,16 +25,15 @@
 <script lang="ts">
 import { Component } from "vue-property-decorator";
 import { BaseComponent } from "@/components/BaseComponent.ts";
+import { AuthRequest } from "@/data/models/AuthRequest";
+import LabelledInput from "@/components/util/LabelledInput.vue";
 
-@Component
+@Component({ components: { LabelledInput } })
 export default class LoginForm extends BaseComponent {
-  username: string | null = null;
-  password: string | null = null;
+  authRequest: AuthRequest = { username: "", password: "" };
 
   login() {
-    if (this.username && this.password) {
-      this.dataApi.userApi.login(this.username, this.password);
-    }
+    this.dataApi.userApi.login(this.authRequest);
   }
 }
 </script>

@@ -1,10 +1,10 @@
 package com.openwallet.api.controllers;
 
 import com.openwallet.api.configuration.JwtTokenUtil;
+import com.openwallet.api.data.models.UserLogin;
 import com.openwallet.api.data.models.responses.ErrorResponse;
 import com.openwallet.api.data.models.responses.LoginResponse;
 import com.openwallet.api.data.models.types.AuthRequest;
-import com.openwallet.api.data.models.UserLogin;
 import com.openwallet.api.data.services.UserLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.MissingRequiredPropertiesException;
@@ -12,7 +12,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,22 +33,16 @@ public class UserLoginController extends BaseController {
 
     @PostMapping
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {
-        try {
-            Authentication authenticate = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        Authentication authenticate = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
-            UserLogin user = (UserLogin) authenticate.getPrincipal();
+        UserLogin user = (UserLogin) authenticate.getPrincipal();
 
-            String token = jwtTokenUtil.generateAccessToken(user);
+        String token = jwtTokenUtil.generateAccessToken(user);
 
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.AUTHORIZATION, token)
-                    .body(new LoginResponse(token));
-        } catch (BadCredentialsException ex) {
-            logger.error(ex.getMessage());
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(ex.getMessage());
-        }
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, token)
+                .body(new LoginResponse(token));
     }
 
     @PostMapping("/register")

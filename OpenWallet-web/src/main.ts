@@ -20,15 +20,15 @@ Vue.use(Vuex);
 const routes: RouteConfig[] = [
   { path: "/index", component: Home },
   { path: "/", redirect: "/index" },
-  { path: "/.well-known/change-password", redirect: "/my-account" },
+  { path: "/.well-known/change-password", redirect: "/my-account" }
 ];
 
 const router = new VueRouter({
   mode: "history",
-  routes: routes,
+  routes: routes
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   const publicPages = ["/login"];
   const authRequired = !publicPages.includes(to.path);
   const loggedIn = !!Store.state.AuthModule.token;
@@ -46,7 +46,7 @@ router.beforeEach((to, from, next) => {
 Vue.config.productionTip = false;
 
 new Vue({
-  render: (h) => h(App),
+  render: h => h(App),
   router: router,
-  store: Store,
+  store: Store
 }).$mount("#app");

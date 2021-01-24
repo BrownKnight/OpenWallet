@@ -1,14 +1,10 @@
 package com.openwallet.api.data.models;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
 
 @Entity
 public class Institution extends BaseEntity {
     private String name;
-    @ManyToOne(targetEntity = Account.class, fetch = FetchType.LAZY)
-    private Account[] accounts;
 
     public Institution(String name) {
         this.name = name;
@@ -23,13 +19,5 @@ public class Institution extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Account[] getAccount() {
-        return accounts;
-    }
-
-    public void setAccount(Account[] accounts) {
-        this.accounts = accounts;
     }
 }

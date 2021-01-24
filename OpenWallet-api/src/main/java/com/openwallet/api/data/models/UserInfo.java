@@ -3,18 +3,18 @@ package com.openwallet.api.data.models;
 import javax.persistence.Entity;
 
 @Entity
-public class User extends BaseEntity {
+public class UserInfo extends BaseEntity {
     private String firstName;
     private String lastName;
     private String emailAddress;
 
-    public User(String firstName, String lastName, String emailAddress) {
+    public UserInfo(String firstName, String lastName, String emailAddress) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = emailAddress;
     }
 
-    public User() {
+    public UserInfo() {
     }
 
     public String getFirstName() {

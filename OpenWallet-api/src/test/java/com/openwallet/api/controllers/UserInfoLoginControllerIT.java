@@ -13,7 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class UserLoginControllerIT extends BaseIntegrationTest {
+class UserInfoLoginControllerIT extends BaseIntegrationTest {
     @Test
     public void GivenValidCredentialsLoginSucceeds() throws Exception {
         As.Admin().login();

@@ -1,6 +1,6 @@
 package com.openwallet.api.controllers;
 
-import com.openwallet.api.data.models.User;
+import com.openwallet.api.data.models.UserInfo;
 import com.openwallet.api.data.models.types.ChangePasswordRequest;
 import com.openwallet.api.data.services.UserLoginService;
 import com.openwallet.api.data.services.UserService;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/users")
-public class UserController extends CRUDController<User, UserService> {
+public class UserController extends CRUDController<UserInfo, UserService> {
     @Autowired
     UserLoginService userLoginService;
 

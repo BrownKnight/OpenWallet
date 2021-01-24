@@ -3,7 +3,6 @@ package com.openwallet.api.data.models;
 import com.openwallet.api.data.models.types.UserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import com.openwallet.api.data.models.User;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -21,9 +20,9 @@ public class UserLogin extends BaseEntity implements UserDetails {
     private boolean credentialsNonExpired = true;
     private boolean enabled = true;
 
-    @OneToOne(targetEntity = User.class, cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = UserInfo.class, cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
-    private User user;
+    private UserInfo userInfo;
 
     protected UserLogin() {
     }
@@ -74,11 +73,11 @@ public class UserLogin extends BaseEntity implements UserDetails {
         this.password = password;
     }
 
-    public User getUser() {
-        return user;
+    public UserInfo getUser() {
+        return userInfo;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 }

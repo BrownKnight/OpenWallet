@@ -1,6 +1,6 @@
 package com.openwallet.api.controllers;
 
-import com.openwallet.api.data.models.User;
+import com.openwallet.api.data.models.UserInfo;
 import com.openwallet.api.testutils.As;
 import com.openwallet.api.testutils.BaseIntegrationTest;
 import com.openwallet.api.testutils.Endpoints;
@@ -12,58 +12,58 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Map;
 
-class UserControllerIT extends BaseIntegrationTest {
+class UserInfoControllerIT extends BaseIntegrationTest {
     @Test
     void GivenAUserItCanSaveItSuccessfully() throws Exception {
-        User user = new User("Test01", "TestL01", "test01@ow.email");
+        UserInfo userInfo = new UserInfo("Test01", "TestL01", "test01@ow.email");
 
         As.Admin()
-                .putRequest("/api/v1/users", user)
+                .putRequest("/api/v1/users", userInfo)
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString(user.getFirstName())));
+                .andExpect(content().string(containsString(userInfo.getFirstName())));
     }
 
     @Test
     void GivenAUserItCanSaveAndRetrieveTheEntity() throws Exception {
-        User user = new User("Test01", "TestL01", "test01@ow.email");
+        UserInfo userInfo = new UserInfo("Test01", "TestL01", "test01@ow.email");
 
         As.Admin()
-                .putRequest("/api/v1/users", user)
+                .putRequest("/api/v1/users", userInfo)
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString(user.getFirstName())));
+                .andExpect(content().string(containsString(userInfo.getFirstName())));
 
         As.Admin()
                 .getRequest("/api/v1/users")
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString(user.getFirstName())));
+                .andExpect(content().string(containsString(userInfo.getFirstName())));
     }
 
     @Test
     void GivenAPartialUserItOnlyUpdatesTheGivenProperties() throws Exception {
-        User user = new User("Test01", "TestL01", "test01@ow.email");
+        UserInfo userInfo = new UserInfo("Test01", "TestL01", "test01@ow.email");
 
         As.Admin()
-                .putRequest("/api/v1/users", user)
+                .putRequest("/api/v1/users", userInfo)
                 .andDo(print())
-                .andDo((data) -> user.setId(TestUtils.readResponseAs(data, User.class)
+                .andDo((data) -> userInfo.setId(TestUtils.readResponseAs(data, UserInfo.class)
                         .getId()))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString(user.getFirstName())));
+                .andExpect(content().string(containsString(userInfo.getFirstName())));
 
         As.Admin()
-                .putRequest("/api/v1/users", Map.of("id", user.getId(), "lastName", "Changed"))
+                .putRequest("/api/v1/users", Map.of("id", userInfo.getId(), "lastName", "Changed"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Changed")));
 
         As.Admin()
-                .getRequest(String.format("/api/v1/users/%s", user.getId()))
+                .getRequest(String.format("/api/v1/users/%s", userInfo.getId()))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString(user.getFirstName())));
+                .andExpect(content().string(containsString(userInfo.getFirstName())));
     }
 
 

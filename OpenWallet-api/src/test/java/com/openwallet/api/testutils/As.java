@@ -1,7 +1,7 @@
 package com.openwallet.api.testutils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.openwallet.api.data.models.User;
+import com.openwallet.api.data.models.UserInfo;
 import com.openwallet.api.data.models.UserLogin;
 import com.openwallet.api.data.models.responses.LoginResponse;
 import org.slf4j.Logger;
@@ -69,7 +69,7 @@ public class As {
     private void initUserData() throws Exception {
         logger.info("Creating user data for {}", this.username);
         UserLogin userLogin = new UserLogin(this.username, "TEST_PASSWORD");
-        userLogin.setUser(new User(this.username, this.username, String.format("%s@ow.email", this.username)));
+        userLogin.setUser(new UserInfo(this.username, this.username, String.format("%s@ow.email", this.username)));
 
         userId = TestUtils.readResponseAs(this.postRequest("/api/login/register", userLogin)
                 .andExpect(status().isOk())

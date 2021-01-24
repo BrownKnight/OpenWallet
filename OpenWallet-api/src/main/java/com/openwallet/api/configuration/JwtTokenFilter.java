@@ -32,7 +32,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response,
                                     @NonNull FilterChain chain) throws ServletException, IOException {
 
-        logger.info(String.format("Request to: %s", request.getRequestURI()));
+        logger.info(String.format("Request to: %s:%s", request.getMethod(), request.getRequestURI()));
         // Get authorization header and validate
         final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (header == null || header.isEmpty() || !header.startsWith("Bearer ")) {

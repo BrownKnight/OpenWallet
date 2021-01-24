@@ -8,6 +8,8 @@ import com.openwallet.api.util.ObjectPropertyHelpers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Currency;
+
 @Component
 public class AccountService extends CRUDService<Account, AccountRepository> {
     @Autowired
@@ -56,6 +58,10 @@ public class AccountService extends CRUDService<Account, AccountRepository> {
                 .orElseThrow();
 
         entity.setInstitution(institution);
+
+        if (entity.getCurrency() == null) {
+            entity.setCurrency(Currency.getInstance("GBP"));
+        }
 
         return repository.save(entity);
     }

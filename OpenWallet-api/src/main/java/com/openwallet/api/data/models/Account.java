@@ -17,13 +17,11 @@ public class Account extends UserScopedEntity {
     private Currency currency;
     @OneToMany(targetEntity = Transaction.class, fetch = FetchType.LAZY, mappedBy = "account")
     private Collection<Transaction> transactions;
-
     public Account(String name, Institution institution, Currency currency) {
         this.name = name;
         this.institution = institution;
         this.currency = currency;
     }
-
 
     public Account() {
     }
@@ -58,5 +56,9 @@ public class Account extends UserScopedEntity {
 
     public Currency getCurrency() {
         return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 }

@@ -26,4 +26,3 @@ hs_err_pid*
 **/application.properties
 **/target
 **/dist
-OpenWallet-api/src/main/resources/application.properties

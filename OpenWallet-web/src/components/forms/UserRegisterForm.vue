@@ -1,11 +1,19 @@
 <template>
-  <b-form @submit.prevent="login">
+  <b-form @submit.prevent="register">
     <LabelledInput
-      autocomplete="email"
-      id="email"
-      label="Email Address"
-      type="email"
-      v-model="registration.emailAddress"
+      autocomplete="given-name"
+      id="first-name"
+      label="First Name"
+      type="text"
+      v-model="registration.firstName"
+    />
+
+    <LabelledInput
+      autocomplete="family-name"
+      id="last-name"
+      label="Last Name"
+      type="text"
+      v-model="registration.lastName"
     />
 
     <LabelledInput
@@ -16,7 +24,15 @@
       v-model="registration.emailAddress"
     />
 
-    <b-button class="ml-2 my-2" variant="success" type="submit">Register</b-button>
+    <LabelledInput
+      autocomplete="new-password"
+      id="password"
+      label="Password"
+      type="password"
+      v-model="registration.password"
+    />
+
+    <b-button class="mt-2" variant="success" type="submit">Register</b-button>
   </b-form>
 </template>
 

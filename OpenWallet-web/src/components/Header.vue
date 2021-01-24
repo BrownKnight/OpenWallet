@@ -8,6 +8,7 @@
     <b-collapse id="navbar-collapse" is-nav>
       <b-navbar-nav v-if="isLoggedIn">
         <b-nav-item v-if="isAdmin()" to="users">Users</b-nav-item>
+        <b-nav-item to="users">Wallet</b-nav-item>
       </b-navbar-nav>
 
       <b-navbar-nav class="ml-auto">

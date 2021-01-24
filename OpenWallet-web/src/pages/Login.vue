@@ -1,10 +1,14 @@
 <template>
-  <b-card class="mt-3" no-body>
-    <b-tabs justified card v-model="activeTab">
-      <b-tab title="Login" active><LoginForm /></b-tab>
-      <b-tab title="Register"><UserRegisterForm @showLogin="activeTab = 0"/></b-tab>
-    </b-tabs>
-  </b-card>
+  <b-row>
+    <b-col cols="12" md="6" offset-md="3">
+      <b-card class="mt-3" no-body>
+        <b-tabs justified card v-model="activeTab">
+          <b-tab title="Login" active><LoginForm /></b-tab>
+          <b-tab title="Register"><UserRegisterForm @showLogin="activeTab = 0"/></b-tab>
+        </b-tabs>
+      </b-card>
+    </b-col>
+  </b-row>
 </template>
 
 <script lang="ts">

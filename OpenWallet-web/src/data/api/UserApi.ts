@@ -29,7 +29,7 @@ export class UserApi extends BaseApi {
   }
 
   async register(userRegistrationRequest: UserRegistrationRequest): Promise<boolean> {
-    const res = await this.callApi(Endpoints.LOGIN, "POST", JSON.stringify(userRegistrationRequest));
+    const res = await this.callApi(Endpoints.REGISTER, "POST", JSON.stringify(userRegistrationRequest));
     if (res.status === 409) {
       this.showMessage({ message: "Account already exists!", variant: "danger" });
       return false;

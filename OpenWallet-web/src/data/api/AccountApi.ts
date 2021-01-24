@@ -7,4 +7,9 @@ export class AccountApi extends BaseApi {
     const res = await this.callApi(Endpoints.ACCOUNTS, "PUT", JSON.stringify(newAccount));
     return await res.json();
   }
+
+  async getAllAccounts(): Promise<Account[]> {
+    const res = await this.callApi(Endpoints.ACCOUNTS);
+    return await res.json();
+  }
 }

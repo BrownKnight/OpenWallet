@@ -8,7 +8,6 @@ public class User extends BaseEntity {
     private String lastName;
     private String emailAddress;
 
-
     public User(String firstName, String lastName, String emailAddress) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -16,7 +15,6 @@ public class User extends BaseEntity {
     }
 
     public User() {
-
     }
 
     public String getFirstName() {

@@ -8,12 +8,12 @@ import java.util.Currency;
 @Entity
 public class Account extends UserScopedEntity {
     private String name;
-    @ManyToOne(targetEntity = Institution.class)
+    @ManyToOne(targetEntity = Institution.class, optional = false)
     private Institution institution;
     private BigDecimal balance = BigDecimal.ZERO;
     @Column(nullable = false)
     private Currency currency;
-    @OneToMany(targetEntity = Transaction.class, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = Transaction.class, fetch = FetchType.LAZY, mappedBy = "account")
     private Collection<Transaction> transactions;
 
     public Account(String name, Institution institution, Currency currency) {

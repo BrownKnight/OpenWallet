@@ -1,5 +1,7 @@
 package com.openwallet.api.data.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +13,7 @@ import java.util.Date;
 public class Transaction extends UserScopedEntity {
     private String description;
     @ManyToOne(targetEntity = Account.class, fetch = FetchType.LAZY, optional = false)
+    @JsonIgnoreProperties("transactions")
     private Account account;
     // Positive = Debit, Negative = Credit
     @Column(nullable = false)

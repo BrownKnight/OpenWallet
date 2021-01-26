@@ -3,6 +3,7 @@ package com.openwallet.api.configuration;
 import com.openwallet.api.data.services.UserLoginService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -49,7 +50,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         // Get user identity and set it on the spring security context
         UserDetails userDetails = userLoginService.findByUsername(jwtTokenUtil.getUsername(token))
-                .orElse(null);
+                .orElseThrow(() -> new BadCredentialsException("Invalid token. User for token not found."));
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
                 List.of()

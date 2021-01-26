@@ -30,8 +30,14 @@ public class TransactionController {
             return ResponseEntity.ok(accountService.addTransactionToAccount(accountId, transaction));
         } catch (JsonProcessingException e1) {
             try {
-                //noinspection unchecked
-                ArrayList<Transaction> transactions = mapper.readValue(requestBody, ArrayList.class);
+                //noinspection rawtypes
+                ArrayList objects = mapper.readValue(requestBody, ArrayList.class);
+
+                ArrayList<Transaction> transactions = new ArrayList<>();
+                for (Object object : objects) {
+                    transactions.add(mapper.convertValue(object, Transaction.class));
+                }
+
                 return ResponseEntity.ok(accountService.addTransactionToAccount(accountId, transactions));
             } catch (JsonProcessingException e2) {
                 throw new IllegalArgumentException("Request body if not a list of or a single transaction.");

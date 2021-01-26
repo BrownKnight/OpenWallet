@@ -8,7 +8,9 @@ import com.openwallet.api.util.ObjectPropertyHelpers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Currency;
+import java.util.List;
 
 @Component
 public class AccountService extends CRUDService<Account, AccountRepository> {
@@ -64,5 +66,14 @@ public class AccountService extends CRUDService<Account, AccountRepository> {
         }
 
         return repository.save(entity);
+    }
+
+    public Iterable<Transaction> addTransactionToAccount(Long accountId, Iterable<Transaction> transactions) {
+        List<Transaction> savedTransactions = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            savedTransactions.add(this.addTransactionToAccount(accountId, transaction));
+        }
+
+        return savedTransactions;
     }
 }

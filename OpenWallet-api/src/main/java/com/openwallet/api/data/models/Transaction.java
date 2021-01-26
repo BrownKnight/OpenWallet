@@ -13,7 +13,7 @@ import java.util.Date;
 public class Transaction extends UserScopedEntity {
     private String description;
     @ManyToOne(targetEntity = Account.class, fetch = FetchType.LAZY, optional = false)
-    @JsonIgnoreProperties("transactions")
+    @JsonIgnoreProperties({"transactions", "institution"})
     private Account account;
     // Positive = Debit, Negative = Credit
     @Column(nullable = false)

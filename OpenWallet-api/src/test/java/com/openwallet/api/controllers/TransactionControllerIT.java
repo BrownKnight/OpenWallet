@@ -82,7 +82,7 @@ public class TransactionControllerIT extends BaseIntegrationTest {
     }
 
     @Test
-    public void ListOfTransactionsUpdatesAccountbalance() throws Exception {
+    public void ListOfTransactionsUpdatesAccountBalance() throws Exception {
         TestData.defaultAccountUserA = TestUtils.readResponseAs(As.UserA()
                 .getRequest(Endpoints.AccountByAccountId(TestData.defaultAccountUserA.getId()))
                 .andReturn(), Account.class);

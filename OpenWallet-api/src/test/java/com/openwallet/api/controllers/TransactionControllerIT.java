@@ -102,9 +102,10 @@ public class TransactionControllerIT extends BaseIntegrationTest {
                 .andExpect(status().isOk())
                 .andReturn(), Account.class);
 
-        BigDecimal expectedNewValue = BigDecimal.valueOf(11);
+        BigDecimal expectedNewValue = TestData.defaultAccountUserA.getBalance()
+                .add(BigDecimal.valueOf(11));
 
         assertNotNull(returnedAccount);
-        assertEquals(expectedNewValue.compareTo(returnedAccount.getBalance()), 0);
+        assertEquals(expectedNewValue, returnedAccount.getBalance());
     }
 }

@@ -9,10 +9,10 @@ export class UserApi extends BaseApi {
   login(authRequest: AuthRequest) {
     this.callApi(Endpoints.LOGIN, "POST", JSON.stringify(authRequest))
       .then(res => {
-        if (res.status === 401) {
+        if (res?.status === 401) {
           throw "Incorrect username/password";
         } else {
-          return res.json();
+          return res?.json();
         }
       })
       .then(json => {
@@ -30,7 +30,7 @@ export class UserApi extends BaseApi {
 
   async register(userRegistrationRequest: UserRegistrationRequest): Promise<boolean> {
     const res = await this.callApi(Endpoints.REGISTER, "POST", JSON.stringify(userRegistrationRequest));
-    if (res.status === 409) {
+    if (res?.status === 409) {
       this.showMessage({ message: "Account already exists!", variant: "danger" });
       return false;
     } else {

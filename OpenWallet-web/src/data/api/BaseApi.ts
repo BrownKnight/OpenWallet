@@ -10,7 +10,7 @@ export class BaseApi {
     this.showMessage = messageFunction;
   }
 
-  async callApi(url: string, method = "GET", body?: string): Promise<Response> {
+  async callApi(url: string, method = "GET", body?: string): Promise<Response | null> {
     console.log("Calling OW Api");
     return fetch(url, {
       method: method,
@@ -19,21 +19,31 @@ export class BaseApi {
     })
       .then(res => {
         if (res.status === 500) {
-          throw `Attempted to call ${url} with a token (${Store.state.AuthModule.token}) that wasn't accepted, status ${res.status}`;
+          throw [
+            `Attempted to call ${url} with a token (${Store.state.AuthModule.token}) that wasn't accepted, status ${res.status}`,
+            res
+          ];
         }
 
         if (res.status === 401) {
           Store.commit("invalidateToken");
           Router.push("/login");
-          throw `Attempted to call ${url} with a token (${Store.state.AuthModule.token}) that wasn't accepted, status ${res.status}`;
+          throw [
+            `Attempted to call ${url} with a token (${Store.state.AuthModule.token}) that wasn't accepted, status ${res.status}`,
+            res
+          ];
+        }
+
+        if (res.status === 400) {
+          throw [`Bad Request to ${url}`, res];
         }
 
         return res;
       })
-      .catch(error => {
+      .catch(([error, res]) => {
         console.error(error);
         this.showMessage({ message: "Unknown error occurred. Session Ended", variant: "danger" });
-        return Promise.reject();
+        return Promise.resolve(res);
       });
   }
 }

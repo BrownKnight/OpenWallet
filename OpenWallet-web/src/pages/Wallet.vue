@@ -33,7 +33,7 @@ export default class Wallet extends BaseComponent {
   }
 
   async getAccounts() {
-    this.accounts = await this.dataApi.accountApi.getAllAccounts();
+    this.accounts = (await this.dataApi.accountApi.getAllAccounts()) ?? [];
   }
 }
 </script>

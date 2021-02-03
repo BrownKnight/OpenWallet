@@ -1,5 +1,11 @@
 <template>
-  <b-container>
+  <b-container v-if="!account">
+    <b-row>
+      <h3>Account not found</h3>
+    </b-row>
+  </b-container>
+
+  <b-container v-else>
     <b-row class="justify-content-between mt-4">
       <h3 class="text-left d-inline-block m-0">{{ account.name }}</h3>
     </b-row>

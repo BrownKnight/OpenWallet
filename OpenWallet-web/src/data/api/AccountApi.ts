@@ -3,18 +3,27 @@ import { Account } from "../models/Account";
 import { Endpoints } from "./Endpoints";
 
 export class AccountApi extends BaseApi {
-  async saveAccount(account: Account): Promise<Account> {
+  async saveAccount(account: Account): Promise<Account | null> {
     const res = await this.callApi(Endpoints.ACCOUNTS, "PUT", JSON.stringify(account));
-    return await res.json();
+    if (!res?.ok) {
+      return null;
+    }
+    return await res?.json();
   }
 
-  async getAllAccounts(): Promise<Account[]> {
+  async getAllAccounts(): Promise<Account[] | null> {
     const res = await this.callApi(Endpoints.ACCOUNTS);
-    return await res.json();
+    if (!res?.ok) {
+      return null;
+    }
+    return await res?.json();
   }
 
-  async getAccountById(id: number): Promise<Account> {
+  async getAccountById(id: number): Promise<Account | null> {
     const res = await this.callApi(`${Endpoints.ACCOUNTS}/${id}`);
-    return await res.json();
+    if (!res?.ok) {
+      return null;
+    }
+    return await res?.json();
   }
 }

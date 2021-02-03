@@ -13,6 +13,7 @@ import { Store } from "@/authStore.ts";
 import Home from "@/pages/Home.vue";
 import Login from "@/pages/Login.vue";
 import Wallet from "@/pages/Wallet.vue";
+import AccountDetails from "@/pages/Wallet/AccountDetails.vue";
 
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
@@ -24,6 +25,7 @@ const routes: RouteConfig[] = [
   { path: "/", redirect: "/index" },
   { path: "/login", component: Login },
   { path: "/wallet", component: Wallet },
+  { path: "/wallet/account/:id", component: AccountDetails, props: true },
   { path: "/.well-known/change-password", redirect: "/my-account" }
 ];
 

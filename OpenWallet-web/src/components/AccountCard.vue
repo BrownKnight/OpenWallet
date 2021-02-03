@@ -1,5 +1,8 @@
 <template>
-  <b-card :header="account.name">{{ account.balance }}</b-card>
+  <b-card :header="account.name">
+    {{ account.balance }}
+    <b-link :to="`/wallet/account/${account.id}`">View Details</b-link>
+  </b-card>
 </template>
 
 <script lang="ts">

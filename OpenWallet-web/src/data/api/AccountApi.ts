@@ -12,4 +12,9 @@ export class AccountApi extends BaseApi {
     const res = await this.callApi(Endpoints.ACCOUNTS);
     return await res.json();
   }
+
+  async getAccountById(id: number): Promise<Account> {
+    const res = await this.callApi(`${Endpoints.ACCOUNTS}/${id}`);
+    return await res.json();
+  }
 }

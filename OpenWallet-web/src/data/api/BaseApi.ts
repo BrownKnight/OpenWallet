@@ -1,4 +1,5 @@
 import { Store } from "@/authStore";
+import { Router } from "@/main";
 
 export class BaseApi {
   showMessage: ({ message, variant, delay }: { message: string; variant?: string; delay?: number }) => void;
@@ -18,6 +19,11 @@ export class BaseApi {
     })
       .then(res => {
         if (res.status === 500) {
+          throw `Attempted to call ${url} with a token (${Store.state.AuthModule.token}) that wasn't accepted, status ${res.status}`;
+        }
+
+        if (res.status === 401) {
+          Router.push("/login");
           throw `Attempted to call ${url} with a token (${Store.state.AuthModule.token}) that wasn't accepted, status ${res.status}`;
         }
 

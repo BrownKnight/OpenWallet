@@ -9,7 +9,6 @@
 import { Component, Prop } from "vue-property-decorator";
 import { BaseComponent } from "@/components/BaseComponent.ts";
 import { Account } from "@/data/models/Account.ts";
-import { Institution } from "@/data/models/Institution";
 
 @Component
 export default class AccountCard extends BaseComponent {
@@ -18,14 +17,4 @@ export default class AccountCard extends BaseComponent {
 }
 </script>
 
-<style scoped lang="scss">
-.navbar-dark .navbar-toggler {
-  border-color: transparent;
-}
-
-.logo {
-  color: white;
-  filter: invert(90%);
-  height: 1.4em;
-}
-</style>
+<style scoped lang="scss"></style>

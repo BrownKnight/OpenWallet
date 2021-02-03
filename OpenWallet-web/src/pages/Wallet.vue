@@ -2,12 +2,12 @@
   <b-container>
     <b-row class="justify-content-between mt-4">
       <h3 class="text-left d-inline-block m-0">Wallet</h3>
-      <b-button variant="outline-info" size="sm">Add Account</b-button>
+      <b-button variant="outline-info" size="sm" v-b-modal.add-account-modal>Add Account</b-button>
     </b-row>
 
-    <b-row>
+    <b-modal id="add-account-modal" title="Add Account" hide-footer>
       <AccountForm />
-    </b-row>
+    </b-modal>
 
     <b-row>
       <AccountCard v-for="account in accounts" :key="account.id" :account="account" />

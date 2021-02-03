@@ -14,7 +14,11 @@ class AuthModule extends VuexModule {
   setToken(token: string) {
     this.token = token;
     // all tokens sent to the server are validated, so whilst we should be verifying here, it's not a massive security hole
-    this.userData = jwt.decode(token) as UserTokenData | null;
+    const tokenSubject = jwt.decode(token)?.sub as string;
+    if (tokenSubject) {
+      const [userId, username] = tokenSubject.split(",");
+      this.userData = { id: userId, username: username };
+    }
   }
 
   @Mutation

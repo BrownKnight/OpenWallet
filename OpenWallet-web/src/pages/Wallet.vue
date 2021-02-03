@@ -9,8 +9,10 @@
       <AccountForm />
     </b-modal>
 
-    <b-row>
-      <AccountCard v-for="account in accounts" :key="account.id" :account="account" />
+    <b-row class="mt-2">
+      <b-col v-for="account in accounts" :key="account.id">
+        <AccountCard :account="account" />
+      </b-col>
     </b-row>
   </b-container>
 </template>

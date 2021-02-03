@@ -1,6 +1,12 @@
 <template>
-  <b-card :header="account.name">
-    {{ account.balance }}
+  <b-card no-body class="d-flex">
+    <b-row>
+      <b-col class="text-left mx-2">
+        <h5>{{ account.name }}</h5>
+      </b-col>
+      <b-col class="text-right mx-2">£{{ account.balance }}</b-col>
+    </b-row>
+
     <b-link :to="`/wallet/account/${account.id}`">View Details</b-link>
   </b-card>
 </template>

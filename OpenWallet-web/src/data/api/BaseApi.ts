@@ -23,6 +23,7 @@ export class BaseApi {
         }
 
         if (res.status === 401) {
+          Store.commit("invalidateToken");
           Router.push("/login");
           throw `Attempted to call ${url} with a token (${Store.state.AuthModule.token}) that wasn't accepted, status ${res.status}`;
         }

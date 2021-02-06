@@ -8,10 +8,24 @@
   <b-container v-else>
     <b-row class="justify-content-between mt-4">
       <h3 class="text-left d-inline-block m-0">{{ account.name }}</h3>
+      <b-button variant="outline-info" size="sm" v-b-modal.import-transactions-modal>Import Transactions</b-button>
     </b-row>
+
+    <b-modal id="import-transactions-modal" title="Transaction Import" hide-footer>
+      <TransactionImport />
+    </b-modal>
 
     <b-row>
       <AccountCard :account="account" />
+    </b-row>
+
+    <b-row>
+      <h3>Transactions</h3>
+    </b-row>
+    <b-row>
+      <b-col cols="12">
+        <TransactionList :transactions="account.transactions" />
+      </b-col>
     </b-row>
   </b-container>
 </template>
@@ -20,9 +34,11 @@
 import { BaseComponent } from "@/components/BaseComponent";
 import { Component, Prop } from "vue-property-decorator";
 import AccountCard from "@/components/AccountCard.vue";
+import TransactionImport from "@/components/import/TransactionImport.vue";
+import TransactionList from "@/components/transaction/TransactionList.vue";
 import { Account } from "@/data/models/Account";
 
-@Component({ components: { AccountCard } })
+@Component({ components: { AccountCard, TransactionImport, TransactionList } })
 export default class AccountDetails extends BaseComponent {
   @Prop({ required: true })
   id!: number;

@@ -5,15 +5,17 @@
     <b-container class="content">
       <router-view></router-view>
     </b-container>
+    <Footer />
   </div>
 </template>
 
 <script lang="ts">
 import { Component } from "vue-property-decorator";
 import Header from "@/components/Header.vue";
+import Footer from "@/components/Footer.vue";
 import { BaseComponent } from "@/components/BaseComponent";
 
-@Component({ components: { Header } })
+@Component({ components: { Header, Footer } })
 export default class App extends BaseComponent {
   get isProductionBuild() {
     return process.env.NODE_ENV === "production";

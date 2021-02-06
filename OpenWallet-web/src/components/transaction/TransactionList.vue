@@ -10,14 +10,10 @@
 <script lang="ts">
 import { Component, Prop } from "vue-property-decorator";
 import { BaseComponent } from "@/components/BaseComponent.ts";
-import { Account } from "@/data/models/Account.ts";
 import TransactionRow from "@/components/transaction/TransactionRow.vue";
 
 @Component({ components: { TransactionRow } })
-export default class TransactionImport extends BaseComponent {
-  getAccounts = this.dataApi.accountApi.getAllAccounts.bind(this.dataApi.accountApi);
-  accountTextFunction = (entity: Account) => entity.name;
-
+export default class TransactionList extends BaseComponent {
   @Prop({ default: undefined })
   transactions: number | undefined;
 }

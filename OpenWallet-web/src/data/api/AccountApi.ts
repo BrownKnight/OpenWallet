@@ -1,5 +1,6 @@
 import { BaseApi } from "@/data/api/BaseApi";
 import { Account } from "../models/Account";
+import { Transaction } from "../models/Transaction";
 import { Endpoints } from "./Endpoints";
 
 export class AccountApi extends BaseApi {
@@ -24,6 +25,20 @@ export class AccountApi extends BaseApi {
     if (!res?.ok) {
       return null;
     }
+    return await res?.json();
+  }
+
+  async addTransactions(accountId: number, transactions: Transaction[]): Promise<Transaction[] | null> {
+    const res = await this.callApi(
+      `${Endpoints.ACCOUNTS}/${accountId}/transactions`,
+      "PUT",
+      JSON.stringify(transactions)
+    );
+
+    if (!res?.ok) {
+      return null;
+    }
+
     return await res?.json();
   }
 }

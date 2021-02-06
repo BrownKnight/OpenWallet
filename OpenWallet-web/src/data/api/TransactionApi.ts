@@ -26,4 +26,22 @@ export class TransactionApi extends BaseApi {
     }
     return await res?.json();
   }
+
+  generateTestTransactions(number: number, accountId: number): Transaction[] {
+    const transactions: Transaction[] = [];
+    for (let i = 0; i < number; i++) {
+      transactions.push(this.generateTestTransaction(new Date(), accountId));
+    }
+
+    return transactions;
+  }
+
+  generateTestTransaction(date: Date, accountId: number): Transaction {
+    return {
+      account: { id: accountId },
+      amount: Math.random() * 100,
+      description: `RANDOM ${Math.random() * 100}`,
+      transactionDate: date
+    };
+  }
 }

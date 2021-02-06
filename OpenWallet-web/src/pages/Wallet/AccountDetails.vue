@@ -12,7 +12,18 @@
     </b-row>
 
     <b-modal id="import-transactions-modal" title="Transaction Import" hide-footer>
-      <TransactionImport />
+      <b-tabs>
+        <b-tab title="Import by File">
+          <b-col cols="12">
+            <TransactionImport />
+          </b-col>
+        </b-tab>
+        <b-tab title="Generate">
+          <b-col cols="12">
+            <MockTransactionImport />
+          </b-col>
+        </b-tab>
+      </b-tabs>
     </b-modal>
 
     <b-row>
@@ -35,10 +46,11 @@ import { BaseComponent } from "@/components/BaseComponent";
 import { Component, Prop } from "vue-property-decorator";
 import AccountCard from "@/components/AccountCard.vue";
 import TransactionImport from "@/components/import/TransactionImport.vue";
+import MockTransactionImport from "@/components/import/MockTransactionImport.vue";
 import TransactionList from "@/components/transaction/TransactionList.vue";
 import { Account } from "@/data/models/Account";
 
-@Component({ components: { AccountCard, TransactionImport, TransactionList } })
+@Component({ components: { AccountCard, TransactionImport, MockTransactionImport, TransactionList } })
 export default class AccountDetails extends BaseComponent {
   @Prop({ required: true })
   id!: number;

@@ -3,7 +3,7 @@
     <b-list-group-item v-if="transactions == null || transactions.length == 0">
       No Transactions :(
     </b-list-group-item>
-    <TransactionRow v-else v-for="transaction in transactions" :key="transaction.id" />
+    <TransactionRow v-else v-for="transaction in transactions" :key="transaction.id" :value="transaction" />
   </b-list-group>
 </template>
 

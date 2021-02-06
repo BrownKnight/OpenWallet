@@ -39,8 +39,8 @@ export class TransactionApi extends BaseApi {
   generateTestTransaction(date: Date, accountId: number): Transaction {
     return {
       account: { id: accountId },
-      amount: Math.random() * 100,
-      description: `RANDOM ${Math.random() * 100}`,
+      amount: Math.round(Math.random() * 10000) / 100,
+      description: `RANDOM ${Math.round(Math.random() * 100)}`,
       transactionDate: date
     };
   }

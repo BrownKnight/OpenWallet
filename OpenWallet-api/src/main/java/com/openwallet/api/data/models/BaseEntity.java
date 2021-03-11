@@ -1,13 +1,9 @@
 package com.openwallet.api.data.models;
 
-import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.util.Date;
 
 @MappedSuperclass
@@ -18,6 +14,9 @@ public abstract class BaseEntity {
     protected Long id;
     @LastModifiedDate
     protected Date dateModified;
+
+    @Column(nullable = true)
+    protected String externalId;
 
     public BaseEntity() {
     }
@@ -34,4 +33,11 @@ public abstract class BaseEntity {
         return dateModified;
     }
 
+    public String getExternalId() {
+        return externalId;
+    }
+
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
+    }
 }

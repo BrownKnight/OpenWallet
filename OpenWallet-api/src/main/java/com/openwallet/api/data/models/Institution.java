@@ -10,6 +10,11 @@ public class Institution extends BaseEntity {
         this.name = name;
     }
 
+    public Institution(String name, String externalId) {
+        this.name = name;
+        this.externalId = externalId;
+    }
+
     public Institution() {
     }
 

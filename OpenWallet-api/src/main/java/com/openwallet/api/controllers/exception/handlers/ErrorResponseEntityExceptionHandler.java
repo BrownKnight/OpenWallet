@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import yapily.ApiException;
 
 @ControllerAdvice
 public class ErrorResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
@@ -26,6 +27,13 @@ public class ErrorResponseEntityExceptionHandler extends ResponseEntityException
     public ResponseEntity<ErrorResponse> handleBadCredentials(Exception exp, WebRequest request) {
         logger.error(exp.getMessage());
         return standardErrorForStatus(HttpStatus.UNAUTHORIZED, exp);
+    }
+
+    @ExceptionHandler(value = {ApiException.class})
+    public ResponseEntity<ErrorResponse> handleYapilyException(Exception exp, WebRequest request) {
+        logger.error("YAPILY Exception: " + exp.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorResponse("Error occurred in a call to the external service Yapily"));
     }
 
     private ResponseEntity<ErrorResponse> standardErrorForStatus(HttpStatus status, Exception exp) {

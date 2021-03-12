@@ -1,6 +1,6 @@
 package com.openwallet.api.data.models.responses;
 
-public class SuccessResponse {
+public class SuccessResponse implements SimpleResponse {
     private final boolean success;
     private String message;
 

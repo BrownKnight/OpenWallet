@@ -1,6 +1,7 @@
 package com.openwallet.api.data.services.external.yapily;
 
 import com.openwallet.api.data.models.Institution;
+import com.openwallet.api.data.models.types.DataSource;
 import com.openwallet.api.data.services.InstitutionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,7 +47,7 @@ public class YapilyStandingDataService {
         Iterable<Institution> existingInstitutions = institutionService.findAll();
 
         List<Institution> owInstitutions = yapilyInstitutions.stream()
-                .map(institution -> new Institution(institution.getName(), institution.getId()))
+                .map(institution -> new Institution(institution.getName(), institution.getId(), DataSource.Yapily))
                 .peek(institution -> {
                     // See if there is an existing institutions with this name, and set the id so it updates instead
                     // of inserts

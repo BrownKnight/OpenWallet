@@ -1,5 +1,5 @@
+import { BaseEntity } from "./BaseEntity";
+
 export type Institution = {
-  id: number;
-  dateModified: Date;
   name: string;
-};
+} & BaseEntity;

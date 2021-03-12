@@ -1,4 +1,7 @@
+import { BaseEntity } from "./BaseEntity";
+import { Institution } from "./Institution";
+
 export type Account = {
   name: string;
-  institution: { id: number };
-};
+  institution: Partial<Institution>;
+} & BaseEntity;

@@ -23,6 +23,7 @@ import { Account } from "@/data/models/Account";
 import LabelledInput from "@/components/util/LabelledInput.vue";
 import EntitySelect from "@/components/util/EntitySelect.vue";
 import { Institution } from "@/data/models/Institution";
+import { SimpleResponse } from "@/data/models/SimpleResponse";
 
 @Component({ components: { LabelledInput, EntitySelect } })
 export default class AccountForm extends BaseComponent {
@@ -30,9 +31,28 @@ export default class AccountForm extends BaseComponent {
   institutionTextFunction = (entity: Institution) => entity.name;
 
   async saveAccount() {
-    const success = await this.dataApi.accountApi.saveAccount(this.account);
-    if (success) {
+    let res: Account | SimpleResponse | null = null;
+    if (this.isOpenWalletInstitution) {
+      res = await this.dataApi.accountApi.saveAccount(this.account);
+    } else if (this.account.institution.id) {
+      res = await this.dataApi.institutionApi.syncAccountsForInstitution(this.account.institution.id);
+      // Check if we need to request consent.
+      if (res.redirectUrl) {
+        const result = await this.$bvModal.msgBoxConfirm(
+          "Consent is required to be able to use your information. Please visit " + res.redirectUrl
+        );
+        // when we get a result, we want to sync again now we have consent
+        console.log("response from dialog is", result);
+        if (result) {
+          await this.dataApi.institutionApi.syncAccountsForInstitution(this.account.institution.id);
+        }
+      }
+    }
+
+    if (res) {
       this.$emit("success");
+    } else {
+      this.showMessage({ message: "Please select an institution." });
     }
   }
 

@@ -16,7 +16,7 @@ export class InstitutionApi extends BaseApi {
   }
 
   async syncAccountsForInstitution(institutionId: number): Promise<SimpleResponse> {
-    const res = await this.callApi(`${Endpoints.INSTITUTIONS}/${institutionId}/sync`, "POST");
+    const res = await this.callApi(`${Endpoints.INSTITUTIONS}/${institutionId}/accounts/sync`, "POST");
     return await res?.json();
   }
 }

@@ -9,7 +9,7 @@
     </b-row>
 
     <b-modal id="add-account-modal" title="Add Account" hide-footer>
-      <AccountForm />
+      <AccountForm @success="$bvModal.hide('add-account-modal')" />
     </b-modal>
 
     <b-row class="mt-2">

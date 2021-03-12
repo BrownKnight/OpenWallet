@@ -38,14 +38,25 @@ export default class AccountForm extends BaseComponent {
       res = await this.dataApi.institutionApi.syncAccountsForInstitution(this.account.institution.id);
       // Check if we need to request consent.
       if (res.redirectUrl) {
-        const result = await this.$bvModal.msgBoxConfirm(
-          "Consent is required to be able to use your information. Please visit " + res.redirectUrl
-        );
-        // when we get a result, we want to sync again now we have consent
+        const messageElements = [
+          this.$createElement("span", "Consent is required to be able to use your information. Please visit "),
+          this.$createElement("a", { attrs: { href: res.redirectUrl } }, "this link to authorise")
+        ];
+        const result = await this.$bvModal.msgBoxConfirm(messageElements);
+        // when we get a ok button click, we want to sync again now we have consent
         console.log("response from dialog is", result);
         if (result) {
-          await this.dataApi.institutionApi.syncAccountsForInstitution(this.account.institution.id);
+          res = await this.dataApi.institutionApi.syncAccountsForInstitution(this.account.institution.id);
+          if (res.redirectUrl) {
+            this.showMessage({
+              message: "No consent found for this institution. Please try again.",
+              variant: "danger"
+            });
+          }
         }
+      } else {
+        // we already have consent, so show a confirm message
+        this.showMessage({ message: res.message });
       }
     }
 

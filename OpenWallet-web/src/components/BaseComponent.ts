@@ -1,6 +1,8 @@
 import { Vue } from "vue-property-decorator";
 import moment from "moment";
 import { DataApi } from "@/data/DataApi";
+import { BaseEntity } from "@/data/models/BaseEntity";
+import { DataSource } from "@/data/models/DataSource";
 
 export class BaseComponent extends Vue {
   dataApi: DataApi = new DataApi(this.showMessage.bind(this));
@@ -33,5 +35,9 @@ export class BaseComponent extends Vue {
 
   prettyFormatDateTime(datetime: string | Date): string {
     return moment(datetime).format("DD Oct, HH:mm");
+  }
+
+  isOpenWalletSource(entity: Partial<BaseEntity>): boolean {
+    return entity.dataSource == DataSource.OpenWallet;
   }
 }

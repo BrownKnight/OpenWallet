@@ -4,6 +4,8 @@ import com.openwallet.api.data.models.BaseEntity;
 import com.openwallet.api.data.models.UserLogin;
 import com.openwallet.api.data.models.UserScopedEntity;
 import com.openwallet.api.data.models.listeners.UnauthorisedEntityAccessException;
+import com.openwallet.api.data.models.responses.SimpleResponse;
+import com.openwallet.api.data.models.responses.SuccessResponse;
 import com.openwallet.api.data.repositories.EntityRepository;
 import com.openwallet.api.util.ObjectPropertyHelpers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +65,8 @@ public class CRUDService<TEntity extends BaseEntity, TRepository extends EntityR
         return repository.saveAll(entities);
     }
 
-    public void deleteById(long id) {
+    public SimpleResponse deleteById(long id) {
         repository.deleteById(id);
+        return new SuccessResponse(String.format("Delete entity with ID %d", id));
     }
 }

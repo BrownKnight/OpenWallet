@@ -80,26 +80,4 @@ public class AccountService extends CRUDService<Account, AccountRepository> {
 
         return savedTransactions;
     }
-
-    public SimpleResponse importAccounts(List<yapily.sdk.Account> accounts, Institution institution) {
-        List<Account> mappedAccounts = accounts.stream()
-                .map(account -> {
-                    Account mappedAccount = new Account();
-                    mappedAccount.setDataSource(DataSource.Yapily);
-                    mappedAccount.setInstitution(institution);
-                    mappedAccount.setCurrency(Currency.getInstance("GBP"));
-                    mappedAccount.setBalance(account.getBalance());
-                    mappedAccount.setName(account.getNickname());
-
-                    // See if it already exists, and if so set the id
-                    this.findByExternalId(account.getId())
-                            .ifPresent((found) -> mappedAccount.setId(found.getId()));
-                    return mappedAccount;
-                })
-                .collect(Collectors.toList());
-
-        this.save(mappedAccounts);
-
-        return new SuccessResponse(String.format("Imported %d accounts!", mappedAccounts.size()));
-    }
 }

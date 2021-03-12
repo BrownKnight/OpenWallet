@@ -19,7 +19,7 @@ public class InstitutionService extends CRUDService<Institution, InstitutionRepo
                 .orElseThrow();
 
         return switch (institution.getDataSource()) {
-            case Yapily -> yapilyService.syncYapilyAccounts(institution);
+            case Yapily -> yapilyService.syncYapilyAccountsForCurrentUser(institution);
             case OpenWallet -> new SuccessResponse("OpenWallet Accounts do not need to synchronise!");
         };
     }

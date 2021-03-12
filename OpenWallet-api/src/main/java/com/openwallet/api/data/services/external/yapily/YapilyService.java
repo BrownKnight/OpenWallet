@@ -3,6 +3,8 @@ package com.openwallet.api.data.services.external.yapily;
 import com.openwallet.api.data.models.Institution;
 import com.openwallet.api.data.models.responses.RedirectIntentionResponse;
 import com.openwallet.api.data.models.responses.SimpleResponse;
+import com.openwallet.api.data.models.responses.SuccessResponse;
+import com.openwallet.api.data.models.types.DataSource;
 import com.openwallet.api.data.services.AccountService;
 import com.openwallet.api.util.SecurityHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +18,10 @@ import yapily.sdk.*;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;
+import java.util.Currency;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class YapilyService {
@@ -50,7 +54,7 @@ public class YapilyService {
                 .getAuthorisationUrl();
     }
 
-    public SimpleResponse syncYapilyAccounts(Institution institution) throws ApiException {
+    public SimpleResponse syncYapilyAccountsForCurrentUser(Institution institution) throws ApiException {
         String applicationUserId = SecurityHelper.getCurrentUserId()
                 .toString();
         // Check if we actually have consent for this institution
@@ -85,6 +89,29 @@ public class YapilyService {
                 .getConsentToken();
         List<Account> accounts = accountsApi.getAccountsUsingGET(consentToken)
                 .getData();
-        return accountService.importAccounts(accounts, institution);
+        return this.importAccounts(accounts, institution);
+    }
+
+
+    public SimpleResponse importAccounts(List<yapily.sdk.Account> accounts, Institution institution) {
+        List<com.openwallet.api.data.models.Account> mappedAccounts = accounts.stream()
+                .map(account -> {
+                    com.openwallet.api.data.models.Account mappedAccount = new com.openwallet.api.data.models.Account();
+                    mappedAccount.setDataSource(DataSource.Yapily);
+                    mappedAccount.setInstitution(institution);
+                    mappedAccount.setCurrency(Currency.getInstance("GBP"));
+                    mappedAccount.setBalance(account.getBalance());
+                    mappedAccount.setName(account.getNickname());
+
+                    // See if it already exists, and if so set the id
+                    accountService.findByExternalId(account.getId())
+                            .ifPresent((found) -> mappedAccount.setId(found.getId()));
+                    return mappedAccount;
+                })
+                .collect(Collectors.toList());
+
+        accountService.save(mappedAccounts);
+
+        return new SuccessResponse(String.format("Imported %d accounts!", mappedAccounts.size()));
     }
 }

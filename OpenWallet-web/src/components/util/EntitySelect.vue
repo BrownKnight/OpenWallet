@@ -45,7 +45,7 @@ export default class EntitySelect extends BaseComponent {
   async loadOptionList() {
     const entities = await this.optionsFunction();
     this.options = entities.map(entity => {
-      return { value: entity.id, text: this.optionTextFunction(entity) };
+      return { value: entity, text: this.optionTextFunction(entity) };
     });
   }
 

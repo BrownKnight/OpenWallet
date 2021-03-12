@@ -1,14 +1,16 @@
 <template>
   <b-form @submit.prevent="saveAccount">
-    <LabelledInput id="name" label="Account Name" type="text" v-model="account.name" />
-
     <EntitySelect
       id="institution"
       label="Institution"
       :optionsFunction="getInstitutions"
       :optionTextFunction="institutionTextFunction"
-      v-model="account.institution.id"
+      v-model="account.institution"
     />
+
+    <div v-if="isOpenWalletInstitution">
+      <LabelledInput id="name" label="Account Name" type="text" v-model="account.name" />
+    </div>
 
     <b-button class="mt-2" variant="success" type="submit">Add Account</b-button>
   </b-form>
@@ -47,6 +49,10 @@ export default class AccountForm extends BaseComponent {
 
   set account(account) {
     this.$emit("input", account);
+  }
+
+  get isOpenWalletInstitution() {
+    return this.isOpenWalletSource(this.account.institution);
   }
 }
 </script>

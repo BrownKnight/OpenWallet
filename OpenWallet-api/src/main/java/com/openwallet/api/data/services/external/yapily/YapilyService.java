@@ -102,6 +102,7 @@ public class YapilyService {
                     mappedAccount.setCurrency(Currency.getInstance("GBP"));
                     mappedAccount.setBalance(account.getBalance());
                     mappedAccount.setName(account.getNickname());
+                    mappedAccount.setExternalId(account.getId());
 
                     // See if it already exists, and if so set the id
                     accountService.findByExternalId(account.getId())

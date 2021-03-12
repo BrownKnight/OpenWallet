@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { Component, Prop } from "vue-property-decorator";
-import { BaseComponent } from "@/components/BaseComponent.ts";
+import { BaseComponent } from "@/components/BaseComponent";
 
 @Component
 export default class LabelledInput extends BaseComponent {

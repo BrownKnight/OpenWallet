@@ -16,8 +16,8 @@
 
 <script lang="ts">
 import { Component, Prop } from "vue-property-decorator";
-import { BaseComponent } from "@/components/BaseComponent.ts";
-import { Account } from "@/data/models/Account.ts";
+import { BaseComponent } from "@/components/BaseComponent";
+import { Account } from "@/data/models/Account";
 import LabelledInput from "@/components/util/LabelledInput.vue";
 import EntitySelect from "@/components/util/EntitySelect.vue";
 import { Institution } from "@/data/models/Institution";

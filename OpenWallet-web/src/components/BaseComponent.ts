@@ -1,4 +1,4 @@
-import Vue from "vue";
+import { Vue } from "vue-property-decorator";
 import moment from "moment";
 import { DataApi } from "@/data/DataApi";
 

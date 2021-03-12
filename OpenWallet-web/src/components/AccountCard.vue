@@ -13,8 +13,8 @@
 
 <script lang="ts">
 import { Component, Prop } from "vue-property-decorator";
-import { BaseComponent } from "@/components/BaseComponent.ts";
-import { Account } from "@/data/models/Account.ts";
+import { BaseComponent } from "@/components/BaseComponent";
+import { Account } from "@/data/models/Account";
 
 @Component
 export default class AccountCard extends BaseComponent {

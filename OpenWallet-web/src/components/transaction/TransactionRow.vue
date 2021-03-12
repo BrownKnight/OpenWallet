@@ -4,8 +4,8 @@
 
 <script lang="ts">
 import { Component, Prop } from "vue-property-decorator";
-import { BaseComponent } from "@/components/BaseComponent.ts";
-import { Transaction } from "@/data/models/Transaction.ts";
+import { BaseComponent } from "@/components/BaseComponent";
+import { Transaction } from "@/data/models/Transaction";
 import LabelledInput from "@/components/util/LabelledInput.vue";
 import EntitySelect from "@/components/util/EntitySelect.vue";
 

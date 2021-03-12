@@ -24,7 +24,7 @@
 
 <script lang="ts">
 import { Component } from "vue-property-decorator";
-import { BaseComponent } from "@/components/BaseComponent.ts";
+import { BaseComponent } from "@/components/BaseComponent";
 import { AuthRequest } from "@/data/models/AuthRequest";
 import LabelledInput from "@/components/util/LabelledInput.vue";
 

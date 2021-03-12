@@ -8,7 +8,7 @@
 <script lang="ts">
 import "reflect-metadata";
 import { Component, Prop, Watch } from "vue-property-decorator";
-import { BaseComponent } from "@/components/BaseComponent.ts";
+import { BaseComponent } from "@/components/BaseComponent";
 
 @Component({
   components: {}

@@ -27,7 +27,7 @@
 
 <script lang="ts">
 import { Component } from "vue-property-decorator";
-import { BaseComponent } from "@/components/BaseComponent.ts";
+import { BaseComponent } from "@/components/BaseComponent";
 
 @Component
 export default class Header extends BaseComponent {

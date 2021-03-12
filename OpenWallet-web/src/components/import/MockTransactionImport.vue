@@ -21,9 +21,9 @@
 
 <script lang="ts">
 import { Component, Prop } from "vue-property-decorator";
-import { BaseComponent } from "@/components/BaseComponent.ts";
-import { Account } from "@/data/models/Account.ts";
-import { Transaction } from "@/data/models/Transaction.ts";
+import { BaseComponent } from "@/components/BaseComponent";
+import { Account } from "@/data/models/Account";
+import { Transaction } from "@/data/models/Transaction";
 import LabelledInput from "@/components/util/LabelledInput.vue";
 import EntitySelect from "@/components/util/EntitySelect.vue";
 import TransactionList from "@/components/transaction/TransactionList.vue";

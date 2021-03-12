@@ -38,8 +38,8 @@
 
 <script lang="ts">
 import { Component } from "vue-property-decorator";
-import { BaseComponent } from "@/components/BaseComponent.ts";
-import { UserRegistration, UserRegistrationRequest } from "@/data/models/UserRegistration.ts";
+import { BaseComponent } from "@/components/BaseComponent";
+import { UserRegistration, UserRegistrationRequest } from "@/data/models/UserRegistration";
 import LabelledInput from "@/components/util/LabelledInput.vue";
 
 @Component({ components: { LabelledInput } })

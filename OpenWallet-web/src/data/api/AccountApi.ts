@@ -1,5 +1,6 @@
 import { BaseApi } from "@/data/api/BaseApi";
 import { Account } from "../models/Account";
+import { SimpleResponse } from "../models/SimpleResponse";
 import { Transaction } from "../models/Transaction";
 import { Endpoints } from "./Endpoints";
 
@@ -26,6 +27,11 @@ export class AccountApi extends BaseApi {
       return null;
     }
     return await res?.json();
+  }
+
+  async deleteAccount(id: number): Promise<SimpleResponse | null> {
+    const res = await this.callApi(`${Endpoints.ACCOUNTS}/${id}`, "DELETE");
+    return res?.json();
   }
 
   async addTransactions(accountId: number, transactions: Transaction[]): Promise<Transaction[] | null> {

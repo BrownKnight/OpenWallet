@@ -8,7 +8,7 @@ export class BaseComponent extends Vue {
   showMessage({ message, variant, delay }: { message: string; variant?: string; delay?: number }) {
     this.$bvToast.toast(message, {
       noCloseButton: true,
-      variant: variant,
+      variant: variant ?? "success",
       autoHideDelay: delay ?? 3000,
       toaster: "b-toaster-top-right",
       href: "#"

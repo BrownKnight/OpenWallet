@@ -8,7 +8,11 @@
   <b-container v-else>
     <b-row class="justify-content-between mt-4">
       <h3 class="text-left d-inline-block m-0">{{ account.name }}</h3>
-      <b-button variant="outline-info" size="sm" v-b-modal.import-transactions-modal>Import Transactions</b-button>
+      <b-dropdown variant="outline-info" size="sm" no-caret right>
+        <template #button-content> <b-icon icon="three-dots" /> </template>
+        <b-dropdown-item v-b-modal.import-transactions-modal>Import Transactions</b-dropdown-item>
+        <b-dropdown-item @click="removeAccount()">Remove Account</b-dropdown-item>
+      </b-dropdown>
     </b-row>
 
     <b-modal id="import-transactions-modal" title="Transaction Import" hide-footer>
@@ -66,6 +70,16 @@ export default class AccountDetails extends BaseComponent {
     if (!this.account) {
       await this.$router.push("/wallet");
       this.showMessage({ message: "Error occurred. Could not fetch account.", variant: "danger" });
+    }
+  }
+
+  async removeAccount() {
+    const res = await this.dataApi.accountApi.deleteAccount(this.id);
+    if (res?.success) {
+      this.$router.push("/wallet");
+      this.showMessage({ message: "Account removed successfully" });
+    } else {
+      this.showMessage({ message: "Error occurred. Could not remove account.", variant: "danger" });
     }
   }
 }

@@ -47,4 +47,9 @@ export class AccountApi extends BaseApi {
 
     return await res?.json();
   }
+
+  async synchroniseAllAccounts(): Promise<SimpleResponse> {
+    const res = await this.callApi(`${Endpoints.ACCOUNTS}/sync`, "POST");
+    return res?.json();
+  }
 }

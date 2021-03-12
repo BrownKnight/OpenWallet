@@ -2,7 +2,10 @@
   <b-container>
     <b-row class="justify-content-between mt-4">
       <h3 class="text-left d-inline-block m-0">Wallet</h3>
-      <b-button variant="outline-info" size="sm" v-b-modal.add-account-modal>Add Account</b-button>
+      <b-button-group>
+        <b-button variant="outline-info" size="sm" v-b-modal.add-account-modal>Add Account</b-button>
+        <b-button variant="outline-info" size="sm" @click="syncAllAccounts()">Sync</b-button>
+      </b-button-group>
     </b-row>
 
     <b-modal id="add-account-modal" title="Add Account" hide-footer>
@@ -36,6 +39,15 @@ export default class Wallet extends BaseComponent {
 
   async getAccounts() {
     this.accounts = (await this.dataApi.accountApi.getAllAccounts()) ?? [];
+  }
+
+  async syncAllAccounts() {
+    const res = await this.dataApi.accountApi.synchroniseAllAccounts();
+    if (res.success) {
+      this.showMessage({ message: res.message });
+    } else {
+      this.showMessage({ message: "Error occurred syncing accounts", variant: "danger" });
+    }
   }
 }
 </script>

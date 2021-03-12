@@ -5,16 +5,18 @@ import com.openwallet.api.data.models.Institution;
 import com.openwallet.api.data.models.Transaction;
 import com.openwallet.api.data.models.responses.SimpleResponse;
 import com.openwallet.api.data.models.responses.SuccessResponse;
-import com.openwallet.api.data.models.types.DataSource;
 import com.openwallet.api.data.repositories.AccountRepository;
 import com.openwallet.api.util.ObjectPropertyHelpers;
+import com.openwallet.api.util.SecurityHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import yapily.ApiException;
 
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Component
 public class AccountService extends CRUDService<Account, AccountRepository> {
@@ -79,5 +81,20 @@ public class AccountService extends CRUDService<Account, AccountRepository> {
         }
 
         return savedTransactions;
+    }
+
+    public SimpleResponse syncAllAccountsForCurrentUser() throws ApiException {
+        Long currentUserId = SecurityHelper.getCurrentUserId();
+        Iterable<Account> allUsersAccounts = this.findAll();
+        List<Institution> allUsersInstitutions = StreamSupport.stream(allUsersAccounts.spliterator(), false)
+                .map(Account::getInstitution)
+                .distinct()
+                .collect(Collectors.toList());
+
+        for (Institution institution : allUsersInstitutions) {
+            institutionService.synchroniseAccountsForInstitution(institution.getId());
+        }
+        return new SuccessResponse(
+                String.format("Synchronised accounts for %d institutions", allUsersInstitutions.size()));
     }
 }

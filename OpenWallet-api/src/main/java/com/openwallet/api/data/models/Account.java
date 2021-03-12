@@ -15,8 +15,10 @@ public class Account extends UserScopedEntity {
     private BigDecimal balance = BigDecimal.ZERO;
     @Column(nullable = false)
     private Currency currency;
-    @OneToMany(targetEntity = Transaction.class, fetch = FetchType.LAZY, mappedBy = "account")
+    @OneToMany(targetEntity = Transaction.class, fetch = FetchType.LAZY, mappedBy = "account", cascade =
+            CascadeType.ALL)
     private Collection<Transaction> transactions;
+
     public Account(String name, Institution institution, Currency currency) {
         this.name = name;
         this.institution = institution;

@@ -1,12 +1,28 @@
 package com.openwallet.api.data.models;
 
 import com.openwallet.api.data.models.types.DataSource;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
 public class Institution extends BaseEntity {
+    @Getter
+    @Setter
+    @Column(nullable = false, unique = true)
     private String name;
+
+    @Getter
+    @Setter
+    @Column(nullable = true)
+    private String iconUrl;
+
+    @Getter
+    @Setter
+    @Column(nullable = true)
+    private String logoUrl;
 
     public Institution(String name) {
         super();
@@ -21,13 +37,5 @@ public class Institution extends BaseEntity {
 
     public Institution() {
         super();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

@@ -14,9 +14,7 @@ import yapily.sdk.InstitutionsApi;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Component
 public class YapilyStandingDataService {
@@ -49,19 +47,30 @@ public class YapilyStandingDataService {
         List<yapily.sdk.Institution> yapilyInstitutions = institutionsApi.getInstitutionsUsingGET()
                 .getData();
 
-        Iterable<Institution> existingInstitutions = institutionService.findAll();
-
         List<Institution> owInstitutions = yapilyInstitutions.stream()
-                .map(institution -> new Institution(institution.getName(), institution.getId(), DataSource.Yapily))
-                .peek(institution -> {
-                    // See if there is an existing institutions with this name, and set the id so it updates instead
-                    // of inserts
-                    Optional<Institution> existing = StreamSupport.stream(existingInstitutions.spliterator(), false)
-                            .filter(x -> x.getName()
-                                    .equals(institution.getName()))
-                            .findFirst();
+                .map(institution -> {
+                    Institution mappedInstitution = new Institution(institution.getName(), institution.getId(),
+                            DataSource.Yapily);
 
-                    existing.ifPresent(value -> institution.setId(value.getId()));
+                    institution.getMedia()
+                            .stream()
+                            .filter(x -> x.getType()
+                                    .equalsIgnoreCase("icon"))
+                            .findFirst()
+                            .ifPresent(media -> mappedInstitution.setIconUrl(media.getSource()));
+
+                    institution.getMedia()
+                            .stream()
+                            .filter(x -> x.getType()
+                                    .equalsIgnoreCase("logo"))
+                            .findFirst()
+                            .ifPresent(media -> mappedInstitution.setLogoUrl(media.getSource()));
+
+                    // Check if the institution already exists
+                    institutionService.findByExternalId(institution.getId())
+                            .ifPresent(x -> mappedInstitution.setId(x.getId()));
+
+                    return mappedInstitution;
                 })
                 .collect(Collectors.toList());
 

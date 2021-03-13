@@ -6,6 +6,7 @@ import com.openwallet.api.data.models.responses.SimpleResponse;
 import com.openwallet.api.data.models.responses.SuccessResponse;
 import com.openwallet.api.data.models.types.DataSource;
 import com.openwallet.api.data.services.AccountService;
+import com.openwallet.api.data.services.TransactionService;
 import com.openwallet.api.util.SecurityHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,16 +18,15 @@ import yapily.auth.HttpBasicAuth;
 import yapily.sdk.*;
 
 import javax.annotation.PostConstruct;
-import java.util.Collections;
-import java.util.Currency;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
 public class YapilyService {
     @Autowired
     public AccountService accountService;
+    @Autowired
+    public TransactionService transactionService;
     @Value("${yapily.api.key}")
     private String apiKey;
     @Value("${yapily.api.secret}")
@@ -87,13 +87,16 @@ public class YapilyService {
 
         String consentToken = consent.get()
                 .getConsentToken();
-        List<Account> accounts = accountsApi.getAccountsUsingGET(consentToken)
-                .getData();
-        return this.importAccounts(accounts, institution);
+
+        return this.syncAccounts(institution, consentToken);
     }
 
 
-    public SimpleResponse importAccounts(List<yapily.sdk.Account> accounts, Institution institution) {
+    public SimpleResponse syncAccounts(Institution institution, String consentToken) throws ApiException {
+        final AccountsApi accountsApi = new AccountsApi();
+
+        List<Account> accounts = accountsApi.getAccountsUsingGET(consentToken)
+                .getData();
         List<com.openwallet.api.data.models.Account> mappedAccounts = accounts.stream()
                 .map(account -> {
                     com.openwallet.api.data.models.Account mappedAccount = new com.openwallet.api.data.models.Account();
@@ -113,6 +116,39 @@ public class YapilyService {
 
         accountService.save(mappedAccounts);
 
+        for (com.openwallet.api.data.models.Account account : mappedAccounts) {
+            syncTransactionsForAccount(account, consentToken);
+        }
+
         return new SuccessResponse(String.format("Imported %d accounts!", mappedAccounts.size()));
+    }
+
+    public SimpleResponse syncTransactionsForAccount(com.openwallet.api.data.models.Account account,
+                                                     String consentToken) throws ApiException {
+        TransactionsApi transactionsApi = new TransactionsApi();
+        List<Transaction> transactions = transactionsApi.getTransactionsUsingGET(consentToken, account.getExternalId(),
+                Collections.emptyList(), "1980-01-01T00:00:00.000Z", "2020-01-01T00:00:00.000Z", null, null, 0, null)
+                .getData();
+
+        List<com.openwallet.api.data.models.Transaction> mappedTransactions = transactions.stream()
+                .map(transaction -> {
+                    com.openwallet.api.data.models.Transaction mappedTransaction =
+                            new com.openwallet.api.data.models.Transaction();
+                    mappedTransaction.setAccount(account);
+                    mappedTransaction.setDataSource(DataSource.Yapily);
+                    mappedTransaction.setExternalId(transaction.getId());
+                    mappedTransaction.setDescription(transaction.getDescription());
+                    mappedTransaction.setTransactionDate(Date.from(transaction.getDate()
+                            .toInstant()));
+
+                    // See if it already exists, and if so set the id
+                    transactionService.findByExternalId(transaction.getId())
+                            .ifPresent((found) -> mappedTransaction.setId(found.getId()));
+                    return mappedTransaction;
+                })
+                .collect(Collectors.toList());
+
+        transactionService.save(mappedTransactions);
+        return new SuccessResponse(String.format("Synced %d transactions", mappedTransactions.size()));
     }
 }

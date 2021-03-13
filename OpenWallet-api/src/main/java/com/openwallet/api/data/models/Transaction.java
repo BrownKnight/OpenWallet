@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.Date;
 
 @Entity
@@ -53,5 +54,9 @@ public class Transaction extends UserScopedEntity {
 
     public Date getTransactionDate() {
         return transactionDate;
+    }
+
+    public void setTransactionDate(Date date) {
+        this.transactionDate = date;
     }
 }

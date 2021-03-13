@@ -140,6 +140,7 @@ public class YapilyService {
                     mappedTransaction.setDescription(transaction.getDescription());
                     mappedTransaction.setTransactionDate(Date.from(transaction.getDate()
                             .toInstant()));
+                    mappedTransaction.setAmount(transaction.getAmount());
 
                     // See if it already exists, and if so set the id
                     transactionService.findByExternalId(transaction.getId())

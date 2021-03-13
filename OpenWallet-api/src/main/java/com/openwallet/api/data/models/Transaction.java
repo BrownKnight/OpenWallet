@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
 import java.util.Date;
 
 @Entity
@@ -21,7 +20,6 @@ public class Transaction extends UserScopedEntity {
     private BigDecimal amount;
     @Column(nullable = false)
     private Date transactionDate;
-
     public Transaction(String description, Account account, BigDecimal amount, Date transactionDate) {
         this.description = description;
         this.account = account;
@@ -50,6 +48,10 @@ public class Transaction extends UserScopedEntity {
 
     public BigDecimal getAmount() {
         return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
     }
 
     public Date getTransactionDate() {

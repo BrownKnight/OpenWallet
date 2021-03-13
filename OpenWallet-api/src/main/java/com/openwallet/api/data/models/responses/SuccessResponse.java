@@ -14,6 +14,12 @@ public class SuccessResponse implements SimpleResponse {
         this.innerResponses = new ArrayList<>();
     }
 
+    public SuccessResponse(String message, List<SimpleResponse> innerResponses) {
+        this.message = message;
+        this.success = true;
+        this.innerResponses = innerResponses;
+    }
+
     public List<SimpleResponse> getInnerResponses() {
         return innerResponses;
     }

@@ -1,26 +1,43 @@
 <template>
-  <b-card no-body class="d-flex">
-    <b-row>
-      <b-col class="text-left mx-2">
-        <h5>{{ account.name }}</h5>
-      </b-col>
-      <b-col class="text-right mx-2">£{{ account.balance }}</b-col>
-    </b-row>
-
-    <b-link :to="`/wallet/account/${account.id}`">View Details</b-link>
-  </b-card>
+  <b-link :to="`/wallet/account/${account.id}`">
+    <b-card no-body class="d-flex p-1 m-2">
+      <div class="d-flex align-items-center p-2">
+        <img class="institution-logo rounded" :src="account.institution.iconUrl" :alt="account.name + ' Logo'" />
+        <h5 class="my-0 ml-2 nr-auto">{{ account.name }}</h5>
+        <span class="ml-auto mr-0">{{ accountBalance }}</span>
+      </div>
+    </b-card>
+  </b-link>
 </template>
 
 <script lang="ts">
 import { Component, Prop } from "vue-property-decorator";
 import { BaseComponent } from "@/components/BaseComponent";
 import { Account } from "@/data/models/Account";
+import { Currency } from "@/data/models/Currency";
 
 @Component
 export default class AccountCard extends BaseComponent {
   @Prop({ required: true })
   account!: Account;
+
+  get currencySymbol() {
+    return Currency.getSymbol(this.account.currency);
+  }
+
+  get accountBalance() {
+    if (this.account.balance >= 0) {
+      return `${this.currencySymbol}${this.account.balance.toFixed(2)}`;
+    } else {
+      return `-${this.currencySymbol}${Math.abs(this.account.balance).toFixed(2)}`;
+    }
+  }
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.institution-logo {
+  height: 2em;
+  width: 2em;
+}
+</style>

@@ -13,7 +13,7 @@
     </b-modal>
 
     <b-row class="mt-2">
-      <b-col v-for="account in accounts" :key="account.id">
+      <b-col v-for="account in accounts" :key="account.id" cols="12" md="6">
         <AccountCard :account="account" />
       </b-col>
     </b-row>

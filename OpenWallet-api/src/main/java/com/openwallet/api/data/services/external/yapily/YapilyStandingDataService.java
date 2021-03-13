@@ -35,6 +35,11 @@ public class YapilyStandingDataService {
         basicAuth.setPassword(apiSecret);
     }
 
+    /**
+     * Gets standing data from Yapily. Currently supports syncing all institutions we have access to.
+     *
+     * @throws ApiException From inner call to Yapily
+     */
     public void synchroniseStandingData() throws ApiException {
         syncInstitutions();
     }

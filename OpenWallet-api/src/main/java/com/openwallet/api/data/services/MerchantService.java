@@ -9,7 +9,7 @@ import java.util.Optional;
 @Component
 public class MerchantService extends CRUDService<Merchant, MerchantRepository> {
     public Merchant findOrCreateByCategoryCode(Integer categoryCode, String merchantName) {
-        if (categoryCode == null || merchantName == null || merchantName.isBlank()) {
+        if (categoryCode == null) {
             Merchant defaultMerchant = Merchant.MiscMerchant;
             categoryCode = defaultMerchant.getIsoCategoryCode();
             merchantName = defaultMerchant.getMerchantName();
@@ -25,12 +25,20 @@ public class MerchantService extends CRUDService<Merchant, MerchantRepository> {
     }
 
     public Merchant findOrCreateByYapilyMerchant(yapily.sdk.Merchant yapilyMerchant) {
-        String merchantName = yapilyMerchant.getMerchantName();
+        String merchantName;
         int catCode;
-        try {
-            // Some transactions may not have a category code, so we use 0 to mean Misc
-            catCode = Integer.parseInt(yapilyMerchant.getMerchantCategoryCode(), 10);
-        } catch (NumberFormatException e) {
+        if (yapilyMerchant != null) {
+            merchantName = yapilyMerchant.getMerchantName();
+
+            try {
+                // Some transactions may not have a category code, so we use 0 to mean Misc
+                catCode = Integer.parseInt(yapilyMerchant.getMerchantCategoryCode(), 10);
+            } catch (NumberFormatException e) {
+                Merchant defaultMerchant = Merchant.MiscMerchant;
+                catCode = defaultMerchant.getIsoCategoryCode();
+                merchantName = defaultMerchant.getMerchantName();
+            }
+        } else {
             Merchant defaultMerchant = Merchant.MiscMerchant;
             catCode = defaultMerchant.getIsoCategoryCode();
             merchantName = defaultMerchant.getMerchantName();

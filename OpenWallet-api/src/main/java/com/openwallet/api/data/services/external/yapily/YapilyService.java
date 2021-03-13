@@ -19,6 +19,7 @@ import yapily.auth.HttpBasicAuth;
 import yapily.sdk.*;
 
 import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -44,20 +45,12 @@ public class YapilyService {
         basicAuth.setPassword(apiSecret);
     }
 
-    public String requestConsentForInstitution(Institution institution) throws ApiException {
-        final AccountsApi accountsApi = new AccountsApi();
-        AccountAuthorisationRequest authRequest = new AccountAuthorisationRequest();
-        authRequest.setApplicationUserId(SecurityHelper.getCurrentUserId()
-                .toString());
-        authRequest.setInstitutionId(institution.getExternalId());
-
-        authRequest.setAccountRequest(new AccountRequest());
-        ApiResponseOfAuthorisationRequestResponse authResponse = accountsApi.initiateAccountRequestUsingPOST(
-                authRequest, null, null, null);
-        return authResponse.getData()
-                .getAuthorisationUrl();
-    }
-
+    /**
+     * @param institution OW Institution where DataSource=Yapily to sync accounts for
+     * @return RedirectIntentionResponse if consent is required. Otherwise,SuccessResponse with informative message
+     * of how many accounts are synced
+     * @throws ApiException From inner call to yapily API
+     */
     public SimpleResponse syncYapilyAccountsForCurrentUser(Institution institution) throws ApiException {
         String applicationUserId = SecurityHelper.getCurrentUserId()
                 .toString();
@@ -72,7 +65,6 @@ public class YapilyService {
                         .equals(Consent.StatusEnum.AUTHORIZED))
                 .findFirst();
 
-        final AccountsApi accountsApi = new AccountsApi();
         if (consent.isEmpty()) {
             String redirectUrl = this.requestConsentForInstitution(institution);
             return new RedirectIntentionResponse(
@@ -87,8 +79,21 @@ public class YapilyService {
         return this.syncAccounts(institution, consentToken);
     }
 
+    private String requestConsentForInstitution(Institution institution) throws ApiException {
+        final AccountsApi accountsApi = new AccountsApi();
+        AccountAuthorisationRequest authRequest = new AccountAuthorisationRequest();
+        authRequest.setApplicationUserId(SecurityHelper.getCurrentUserId()
+                .toString());
+        authRequest.setInstitutionId(institution.getExternalId());
 
-    public SimpleResponse syncAccounts(Institution institution, String consentToken) throws ApiException {
+        authRequest.setAccountRequest(new AccountRequest());
+        ApiResponseOfAuthorisationRequestResponse authResponse = accountsApi.initiateAccountRequestUsingPOST(
+                authRequest, null, null, null);
+        return authResponse.getData()
+                .getAuthorisationUrl();
+    }
+
+    private SimpleResponse syncAccounts(Institution institution, String consentToken) throws ApiException {
         final AccountsApi accountsApi = new AccountsApi();
 
         List<Account> accounts = accountsApi.getAccountsUsingGET(consentToken)
@@ -99,8 +104,8 @@ public class YapilyService {
                     mappedAccount.setDataSource(DataSource.Yapily);
                     mappedAccount.setInstitution(institution);
                     mappedAccount.setCurrency(Currency.getInstance("GBP"));
-                    mappedAccount.setBalance(account.getBalance());
-                    mappedAccount.setName(account.getNickname());
+                    mappedAccount.setBalance(account.getBalance() != null ? account.getBalance() : BigDecimal.ZERO);
+                    mappedAccount.setName(account.getNickname() != null ? account.getNickname() : account.getType());
                     mappedAccount.setExternalId(account.getId());
 
                     // See if it already exists, and if so set the id
@@ -120,11 +125,19 @@ public class YapilyService {
         return response;
     }
 
-    public SimpleResponse syncTransactionsForAccount(com.openwallet.api.data.models.Account account,
-                                                     String consentToken) throws ApiException {
+    /**
+     * Given an OpenWallet which was created from a Yapily account, synchronise the last 1000 transactions from Yapily
+     *
+     * @param account      OW Account where DataSource=Yapily
+     * @param consentToken Yapily consent token
+     * @return SimpleResponse with message containing number of transactions synced
+     * @throws ApiException thrown by inner call to Yapily api
+     */
+    private SimpleResponse syncTransactionsForAccount(com.openwallet.api.data.models.Account account,
+                                                      String consentToken) throws ApiException {
         TransactionsApi transactionsApi = new TransactionsApi();
         List<Transaction> transactions = transactionsApi.getTransactionsUsingGET(consentToken, account.getExternalId(),
-                Collections.emptyList(), "1980-01-01T00:00:00.000Z", "2020-01-01T00:00:00.000Z", null, null, 0, null)
+                Collections.emptyList(), "1980-01-01T00:00:00.000Z", null, null, null, 0, null)
                 .getData();
 
         List<com.openwallet.api.data.models.Transaction> mappedTransactions = transactions.stream()
@@ -143,7 +156,7 @@ public class YapilyService {
 
 
                     // See if it already exists, and if so set the id
-                    transactionService.findByExternalId(transaction.getId())
+                    transactionService.findByExternalIdAndAccountId(transaction.getId(), account.getId())
                             .ifPresent((found) -> mappedTransaction.setId(found.getId()));
                     return mappedTransaction;
                 })

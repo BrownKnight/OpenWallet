@@ -39,8 +39,8 @@ public class Transaction extends UserScopedEntity {
 
     @Getter
     @Setter
-    @Column(nullable = false)
-    private int merchantCategoryCode;
+    @ManyToOne(targetEntity = Merchant.class, optional = false)
+    private Merchant merchant;
 
     public Transaction(String description, Account account, BigDecimal amount, Date transactionDate) {
         this.description = description;

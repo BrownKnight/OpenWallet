@@ -6,6 +6,7 @@ import com.openwallet.api.data.models.responses.SimpleResponse;
 import com.openwallet.api.data.models.responses.SuccessResponse;
 import com.openwallet.api.data.models.types.DataSource;
 import com.openwallet.api.data.services.AccountService;
+import com.openwallet.api.data.services.MerchantService;
 import com.openwallet.api.data.services.TransactionService;
 import com.openwallet.api.util.SecurityHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class YapilyService {
     public AccountService accountService;
     @Autowired
     public TransactionService transactionService;
+    @Autowired
+    public MerchantService merchantService;
+
     @Value("${yapily.api.key}")
     private String apiKey;
     @Value("${yapily.api.secret}")
@@ -134,6 +138,9 @@ public class YapilyService {
                     mappedTransaction.setTransactionDate(Date.from(transaction.getDate()
                             .toInstant()));
                     mappedTransaction.setAmount(transaction.getAmount());
+                    mappedTransaction.setMerchant(
+                            merchantService.findOrCreateByYapilyMerchant(transaction.getMerchant()));
+
 
                     // See if it already exists, and if so set the id
                     transactionService.findByExternalId(transaction.getId())

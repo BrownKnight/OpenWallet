@@ -1,6 +1,9 @@
 package com.openwallet.api.data.models;
 
 import com.openwallet.api.data.models.types.DataSource;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -12,14 +15,22 @@ import java.util.Date;
 public abstract class BaseEntity {
     @Id
     @GeneratedValue()
+    @Getter
+    @Setter
     protected Long id;
+
     @LastModifiedDate
+    @Getter
     protected Date dateModified;
 
     @Column(nullable = true)
+    @Getter
+    @Setter
     protected String externalId;
 
     @Column(nullable = true)
+    @Getter
+    @Setter
     protected DataSource dataSource;
 
     public BaseEntity() {
@@ -27,34 +38,6 @@ public abstract class BaseEntity {
     }
 
     public BaseEntity(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Date getDateModified() {
-        return dateModified;
-    }
-
-    public String getExternalId() {
-        return externalId;
-    }
-
-    public void setExternalId(String externalId) {
-        this.externalId = externalId;
-    }
-
-    public DataSource getDataSource() {
-        return dataSource;
-    }
-
-    public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 }

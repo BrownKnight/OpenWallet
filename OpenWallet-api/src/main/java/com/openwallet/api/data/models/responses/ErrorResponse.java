@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ErrorResponse implements SimpleResponse {
-    private final boolean success;
     private final List<SimpleResponse> innerResponses;
+    private boolean success;
     private String message;
 
     public ErrorResponse(String message) {
@@ -19,6 +19,10 @@ public class ErrorResponse implements SimpleResponse {
     }
 
     public void addInnerResponse(SimpleResponse innerResponse) {
+        if (!innerResponse.isSuccess()) {
+            this.success = false;
+            this.message = "Error occurred in an inner request";
+        }
         this.innerResponses.add(innerResponse);
     }
 

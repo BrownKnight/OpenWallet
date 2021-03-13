@@ -3,6 +3,7 @@ package com.openwallet.api.data.services;
 import com.openwallet.api.data.models.Account;
 import com.openwallet.api.data.models.Institution;
 import com.openwallet.api.data.models.Transaction;
+import com.openwallet.api.data.models.responses.RedirectIntentionResponse;
 import com.openwallet.api.data.models.responses.SimpleResponse;
 import com.openwallet.api.data.models.responses.SuccessResponse;
 import com.openwallet.api.data.repositories.AccountRepository;
@@ -15,6 +16,7 @@ import yapily.ApiException;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -91,10 +93,22 @@ public class AccountService extends CRUDService<Account, AccountRepository> {
                 .distinct()
                 .collect(Collectors.toList());
 
-        for (Institution institution : allUsersInstitutions) {
-            institutionService.synchroniseAccountsForInstitution(institution.getId());
-        }
-        return new SuccessResponse(
+
+        SimpleResponse response = new SuccessResponse(
                 String.format("Synchronised accounts for %d institutions", allUsersInstitutions.size()));
+        for (Institution institution : allUsersInstitutions) {
+            response.addInnerResponse(institutionService.synchroniseAccountsForInstitution(institution.getId()));
+        }
+
+        Optional<SimpleResponse> redirectRequired = response.getInnerResponses()
+                .stream()
+                .filter(res -> res instanceof RedirectIntentionResponse)
+                .findFirst();
+
+        if (redirectRequired.isPresent() && redirectRequired.get() instanceof RedirectIntentionResponse) {
+            return redirectRequired.get();
+        }
+
+        return response;
     }
 }

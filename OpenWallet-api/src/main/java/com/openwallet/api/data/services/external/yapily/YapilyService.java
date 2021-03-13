@@ -112,12 +112,12 @@ public class YapilyService {
 
         accountService.save(mappedAccounts);
 
-        List<SimpleResponse> responses = new ArrayList<>();
+        SimpleResponse response = new SuccessResponse(String.format("Imported %d accounts!", mappedAccounts.size()));
         for (com.openwallet.api.data.models.Account account : mappedAccounts) {
-            responses.add(syncTransactionsForAccount(account, consentToken));
+            response.addInnerResponse(syncTransactionsForAccount(account, consentToken));
         }
 
-        return new SuccessResponse(String.format("Imported %d accounts!", mappedAccounts.size()), responses);
+        return response;
     }
 
     public SimpleResponse syncTransactionsForAccount(com.openwallet.api.data.models.Account account,

@@ -22,7 +22,7 @@ export class AccountApi extends BaseApi {
   }
 
   async getAccountById(id: number): Promise<Account | null> {
-    const res = await this.callApi(`${Endpoints.ACCOUNTS}/${id}`);
+    const res = await this.callApi(`${Endpoints.ACCOUNTS}/${id}/transactions`);
     if (!res?.ok) {
       return null;
     }

@@ -6,13 +6,8 @@
   </b-container>
 
   <b-container v-else>
-    <b-row class="justify-content-between mt-4">
-      <h3 class="text-left d-inline-block m-0">{{ account.name }}</h3>
-      <b-dropdown variant="outline-info" size="sm" no-caret right>
-        <template #button-content> <b-icon icon="three-dots" /> </template>
-        <b-dropdown-item v-b-modal.import-transactions-modal>Import Transactions</b-dropdown-item>
-        <b-dropdown-item @click="removeAccount()">Remove Account</b-dropdown-item>
-      </b-dropdown>
+    <b-row class="mt-4">
+      <AccountCard :account="account" class="m-0 flex-grow-1" />
     </b-row>
 
     <b-modal id="import-transactions-modal" title="Transaction Import" hide-footer>
@@ -30,15 +25,16 @@
       </b-tabs>
     </b-modal>
 
-    <AccountCard :account="account" />
-
-    <b-row>
-      <h3>Transactions</h3>
+    <b-row class="mt-4 mb-2">
+      <h3 class="ml-0 mr-auto my-0">Transactions</h3>
+      <b-dropdown variant="outline-info" size="sm" no-caret right class="ml-auto mr-0">
+        <template #button-content> <b-icon icon="three-dots" /> </template>
+        <b-dropdown-item v-b-modal.import-transactions-modal>Import Transactions</b-dropdown-item>
+        <b-dropdown-item @click="removeAccount()">Remove Account</b-dropdown-item>
+      </b-dropdown>
     </b-row>
     <b-row>
-      <b-col cols="12">
-        <TransactionList :transactions="account.transactions" />
-      </b-col>
+      <TransactionList :transactions="account.transactions" class="w-100" />
     </b-row>
   </b-container>
 </template>

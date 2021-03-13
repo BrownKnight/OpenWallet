@@ -1,5 +1,5 @@
 export class Currency {
-  public static getSymbol(currencyCode: string): string {
+  public static getSymbol(currencyCode?: string): string {
     switch (currencyCode) {
       case "GBP":
         return "£";

@@ -1,13 +1,11 @@
 <template>
-  <b-link :to="`/wallet/account/${account.id}`" class="no-link-style" active-class="">
-    <b-card no-body class="d-flex p-1 m-2">
-      <div class="d-flex align-items-center p-2">
-        <img class="institution-logo rounded" :src="account.institution.iconUrl" :alt="account.name + ' Logo'" />
-        <h5 class="my-0 ml-2 nr-auto">{{ account.name }}</h5>
-        <span class="ml-auto mr-0">{{ accountBalance }}</span>
-      </div>
-    </b-card>
-  </b-link>
+  <b-list-group-item :to="`/wallet/account/${account.id}`" class="no-link-style" active-class="">
+    <div class="d-flex align-items-center p-2">
+      <img class="institution-logo rounded" :src="account.institution.iconUrl" :alt="account.name + ' Logo'" />
+      <h5 class="my-0 ml-2 nr-auto">{{ account.name }}</h5>
+      <span class="ml-auto mr-0">{{ accountBalance }}</span>
+    </div>
+  </b-list-group-item>
 </template>
 
 <script lang="ts">

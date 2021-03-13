@@ -70,15 +70,7 @@ public class YapilyService {
 
         final AccountsApi accountsApi = new AccountsApi();
         if (consent.isEmpty()) {
-            AccountAuthorisationRequest authRequest = new AccountAuthorisationRequest();
-            authRequest.setApplicationUserId(applicationUserId);
-            authRequest.setInstitutionId(institution.getExternalId());
-            authRequest.setAccountRequest(new AccountRequest());
-            ApiResponseOfAuthorisationRequestResponse authResponse = accountsApi.initiateAccountRequestUsingPOST(
-                    authRequest, null, null, null);
-
-            String redirectUrl = authResponse.getData()
-                    .getAuthorisationUrl();
+            String redirectUrl = this.requestConsentForInstitution(institution);
             return new RedirectIntentionResponse(
                     "No consent found for this institution. Please visit this URL to give us consent to access " +
                             "your data!",

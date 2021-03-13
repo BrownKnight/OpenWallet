@@ -30,9 +30,7 @@
       </b-tabs>
     </b-modal>
 
-    <b-row>
-      <AccountCard :account="account" />
-    </b-row>
+    <AccountCard :account="account" />
 
     <b-row>
       <h3>Transactions</h3>

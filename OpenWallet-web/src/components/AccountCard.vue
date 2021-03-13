@@ -1,5 +1,5 @@
 <template>
-  <b-link :to="`/wallet/account/${account.id}`">
+  <b-link :to="`/wallet/account/${account.id}`" class="no-link-style" active-class="">
     <b-card no-body class="d-flex p-1 m-2">
       <div class="d-flex align-items-center p-2">
         <img class="institution-logo rounded" :src="account.institution.iconUrl" :alt="account.name + ' Logo'" />

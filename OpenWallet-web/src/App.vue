@@ -83,6 +83,17 @@ a,
 button {
   font-weight: normal !important;
 }
+
+.no-link-style {
+  :link {
+    color: inherit;
+  }
+  :hover {
+    color: inherit;
+  }
+  color: inherit;
+  text-decoration: none !important;
+}
 // Import Bootstrap and BootstrapVue source SCSS files
 @import "~bootstrap/scss/bootstrap.scss";
 @import "~bootstrap-vue/src/index.scss";

@@ -1,6 +1,6 @@
 <template>
-  <b-list-group-item :to="`/wallet/account/${account.id}`" class="no-link-style" active-class="">
-    <div class="d-flex align-items-center p-2">
+  <b-list-group-item :to="`/wallet/account/${account.id}`" class="no-link-style p-2" active-class="">
+    <div class="d-flex align-items-center">
       <img class="institution-logo rounded" :src="account.institution.iconUrl" :alt="account.name + ' Logo'" />
       <h5 class="my-0 ml-2 nr-auto">{{ account.name }}</h5>
       <span class="ml-auto mr-0">{{ accountBalance }}</span>
@@ -35,7 +35,7 @@ export default class AccountCard extends BaseComponent {
 
 <style scoped lang="scss">
 .institution-logo {
-  height: 2em;
-  width: 2em;
+  height: 1.8em;
+  width: 1.8em;
 }
 </style>

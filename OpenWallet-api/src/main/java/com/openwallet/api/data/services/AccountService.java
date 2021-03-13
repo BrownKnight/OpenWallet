@@ -33,7 +33,7 @@ public class AccountService extends CRUDService<Account, AccountRepository> {
                 .orElseThrow();
         // Load the transactions (lazy loaded)
         //noinspection ResultOfMethodCallIgnored
-        account.getTransactions();
+        account.getTransactions().size();
         return account;
     }
 

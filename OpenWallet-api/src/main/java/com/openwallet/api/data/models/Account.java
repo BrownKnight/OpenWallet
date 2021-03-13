@@ -1,20 +1,39 @@
 package com.openwallet.api.data.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Currency;
 
 @Entity
+@NoArgsConstructor
 public class Account extends UserScopedEntity {
+    @Getter
+    @Setter
     @Column(nullable = false)
     private String name;
+
+    @Getter
+    @Setter
     @ManyToOne(targetEntity = Institution.class, optional = false)
     private Institution institution;
+
+    @Getter
+    @Setter
     @Column(nullable = false)
     private BigDecimal balance = BigDecimal.ZERO;
+
+    @Getter
+    @Setter
     @Column(nullable = false)
     private Currency currency;
+
+    @Getter
     @OneToMany(targetEntity = Transaction.class, fetch = FetchType.LAZY, mappedBy = "account", cascade =
             CascadeType.ALL)
     private Collection<Transaction> transactions;
@@ -22,45 +41,6 @@ public class Account extends UserScopedEntity {
     public Account(String name, Institution institution, Currency currency) {
         this.name = name;
         this.institution = institution;
-        this.currency = currency;
-    }
-
-    public Account() {
-    }
-
-    public Collection<Transaction> getTransactions() {
-        return transactions;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Institution getInstitution() {
-        return institution;
-    }
-
-    public void setInstitution(Institution institution) {
-        this.institution = institution;
-    }
-
-    public BigDecimal getBalance() {
-        return balance;
-    }
-
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
-    }
-
-    public Currency getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(Currency currency) {
         this.currency = currency;
     }
 }

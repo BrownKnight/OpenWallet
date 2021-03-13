@@ -42,8 +42,28 @@ export default class Wallet extends BaseComponent {
   }
 
   async syncAllAccounts() {
-    const res = await this.dataApi.accountApi.synchroniseAllAccounts();
+    let res = await this.dataApi.accountApi.synchroniseAllAccounts();
     if (res.success) {
+      if (res.redirectUrl) {
+        const messageElements = [
+          this.$createElement(
+            "span",
+            "Consent is required for one of your accounts to be able to use your information. Please visit "
+          ),
+          this.$createElement("a", { attrs: { href: res.redirectUrl } }, "this link to authorise")
+        ];
+        const result = await this.$bvModal.msgBoxConfirm(messageElements);
+        // when we get a ok button click, we want to sync again now we have consent
+        if (result) {
+          res = await this.dataApi.accountApi.synchroniseAllAccounts();
+          if (res.redirectUrl) {
+            this.showMessage({
+              message: "No consent found for this institution. Please try again.",
+              variant: "danger"
+            });
+          }
+        }
+      }
       this.showMessage({ message: res.message });
     } else {
       this.showMessage({ message: "Error occurred syncing accounts", variant: "danger" });

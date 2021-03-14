@@ -1,6 +1,11 @@
 <template>
-  <b-list-group-item class="d-flex">
-    <span class="ml-0 mr-auto text-left">{{ transaction.description }}</span>
+  <b-list-group-item class="d-flex py-1 px-2 align-items-center">
+    <div class="ml-0 mr-0 text-left">
+      <small class="">{{ prettyFormatDateTime(transaction.transactionDate) }}</small>
+      <br />
+      <span class="">{{ transaction.description }}</span>
+    </div>
+    <span class="ml-0 mr-auto"> {{ transaction.merchant.isoCategoryCode }} </span>
     <span class="ml-auto mr-0"> {{ transactionAmount }} </span>
   </b-list-group-item>
 </template>

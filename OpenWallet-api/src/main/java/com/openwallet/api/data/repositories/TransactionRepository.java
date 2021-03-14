@@ -1,6 +1,7 @@
 package com.openwallet.api.data.repositories;
 
 import com.openwallet.api.data.models.Transaction;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -11,4 +12,6 @@ public interface TransactionRepository extends EntityRepository<Transaction> {
     List<Transaction> findAll();
 
     Optional<Transaction> findByExternalIdAndAccountId(String externalId, Long accountId);
+
+    List<Transaction> findByAccountIdOrderByTransactionDateDesc(Long accountId);
 }

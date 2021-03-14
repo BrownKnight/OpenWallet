@@ -4,11 +4,16 @@ import com.openwallet.api.data.models.Transaction;
 import com.openwallet.api.data.repositories.TransactionRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
 public class TransactionService extends CRUDService<Transaction, TransactionRepository> {
     public Optional<Transaction> findByExternalIdAndAccountId(String externalId, Long accountId) {
         return repository.findByExternalIdAndAccountId(externalId, accountId);
+    }
+
+    public List<Transaction> getOrderedTransactionForAccountId(Long accountId) {
+        return repository.findByAccountIdOrderByTransactionDateDesc(accountId);
     }
 }

@@ -34,6 +34,7 @@ public class Account extends UserScopedEntity {
     private Currency currency;
 
     @Getter
+    @Setter
     @OneToMany(targetEntity = Transaction.class, fetch = FetchType.LAZY, mappedBy = "account", cascade =
             CascadeType.ALL)
     private Collection<Transaction> transactions;

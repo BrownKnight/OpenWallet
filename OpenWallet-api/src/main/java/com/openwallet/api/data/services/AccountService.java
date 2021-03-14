@@ -31,9 +31,9 @@ public class AccountService extends CRUDService<Account, AccountRepository> {
     public Account getTransactionsForAccount(Long accountId) {
         Account account = repository.findById(accountId)
                 .orElseThrow();
-        // Load the transactions (lazy loaded)
-        //noinspection ResultOfMethodCallIgnored
-        account.getTransactions().size();
+
+        // Set the transactions as an ordered list, instead of using the lazy loading
+        account.setTransactions(transactionService.getOrderedTransactionForAccountId(accountId));
         return account;
     }
 

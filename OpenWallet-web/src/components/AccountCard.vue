@@ -1,5 +1,5 @@
 <template>
-  <b-list-group-item :to="`/wallet/account/${account.id}`" class="no-link-style p-2" active-class="">
+  <b-list-group-item :to="`/wallet/account/${account.id}`" class="no-link-style p-2 rounded" active-class="">
     <div class="d-flex align-items-center">
       <img class="institution-logo rounded" :src="account.institution.iconUrl" :alt="account.name + ' Logo'" />
       <h5 class="my-0 ml-2 nr-auto">{{ account.name }}</h5>
